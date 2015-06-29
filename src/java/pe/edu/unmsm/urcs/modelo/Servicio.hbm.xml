@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 29/06/2015 02:00:36 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pe.edu.unmsm.urcs.modelo.Servicio" table="Servicio" catalog="eleganti_urcs" optimistic-lock="version">
+        <id name="idServicio" type="java.lang.Integer">
+            <column name="idServicio" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="area" class="pe.edu.unmsm.urcs.modelo.Area" fetch="select">
+            <column name="Area_idArea" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="100" />
+        </property>
+        <set name="solicituds" table="Solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Servicio_idServicio" not-null="true" />
+            </key>
+            <one-to-many class="pe.edu.unmsm.urcs.modelo.Solicitud" />
+        </set>
+    </class>
+</hibernate-mapping>

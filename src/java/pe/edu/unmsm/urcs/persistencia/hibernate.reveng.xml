@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="eleganti_urcs"/>
+  <table-filter match-name="Solicitud"/>
+  <table-filter match-name="Opcion"/>
+  <table-filter match-name="Estado"/>
+  <table-filter match-name="Facultad_Dependencia"/>
+  <table-filter match-name="Servicio"/>
+  <table-filter match-name="Informe"/>
+  <table-filter match-name="Operario"/>
+  <table-filter match-name="Oficina"/>
+  <table-filter match-name="Area"/>
+  <table-filter match-name="Perfil"/>
+  <table-filter match-name="Usuario"/>
+</hibernate-reverse-engineering>

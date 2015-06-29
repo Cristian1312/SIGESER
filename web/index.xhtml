@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Bienvenidos a SIGESER!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+        <link href="resources/css/login.css" rel="stylesheet" media="screen" />
+        <link rel="shortcut icon" href="resources/images/favicon.png" type="image/x-icon" />
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (!args.validationFailed || args.loggedIn) {
+                    setTimeout(function () {
+                        window.location = args.view;
+                    }, 500);
+                }
+            }
+        </script>
+    </h:head>
+    <h:body>
+        <div class="container">
+            <div class="card card-container">
+                <img id="profile-img" class="profile-img-card" src="resources/images/avatar.png" />
+                <p id="profile-name" class="profile-name-card"></p>
+                <h:form class="form-signin">
+                    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                    <span id="reauth-email" class="reauth-email"></span>
+                    <p:inputText id="correo" value="#{loginBean.usuario.correo}"
+                                 required="true" label="correo" placeholder="Correo"
+                                 class="form-control"/>
+                    <p:password id="password" value="#{loginBean.usuario.pass}"
+                                required="true" label="password" placeholder="Password"
+                                class="form-control"/>
+                    <div id="remember" class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me" /> Recuérdame
+                        </label>
+                    </div>
+                    <p:commandButton value="Login" update="growl" actionListener="#{loginBean.logIn}"
+                                oncomplete="handleLoginRequest(xhr, status, args)" 
+                                class="btn btn-lg btn-primary btn-block btn-signin"/>
+                </h:form>
+                <a href="#" class="forgot-password">
+                    ¿Olvidaste la contraseña?
+                </a>
+            </div>
+        </div>
+    </h:body>
+</html>
