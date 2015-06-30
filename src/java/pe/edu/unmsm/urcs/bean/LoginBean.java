@@ -67,13 +67,13 @@ public class LoginBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             context.addCallbackParam("view", view);
         } catch (Exception ex) {
-            if(this.transaction!=null) {
+            if(this.transaction != null) {
                 transaction.rollback();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
         } finally {
-            if(this.session!=null) {
+            if(this.session != null) {
                 this.session.close();
             }
         }

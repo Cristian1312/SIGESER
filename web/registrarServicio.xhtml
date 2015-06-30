@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>SIGESER-Registrar servicio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+        <link rel="shortcut icon" href="resources/images/favicon.png" type="image/x-icon" />
+    </h:head>
+    <h:body>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Nueva Solicitud</b></h3>
+            </div>
+            <div id="grid" class="panel-body">
+                <h:form id="servicioForm" class="form-horizontal">
+                    <p:growl id="mensajeGeneral" showDetail="true"/>
+                    <div class="form-group">
+                        <p:outputLabel for="area" value="Area" class="control-label col-sm-4" />
+                        <div class="col-sm-4">
+                            <h:selectOneMenu id="area" value="#{registrarServicioBean.idArea}" class="form-control"
+                                             required="true">
+                                <f:selectItem itemLabel="Seleccione área" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{registrarServicioBean.selectItemsOneArea}" />
+                                <p:ajax update="servicio" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p:outputLabel for="servicio" value="Servicio" class="control-label col-sm-4" />
+                        <div class="col-sm-4">
+                            <h:selectOneMenu id="servicio" value="#{registrarServicioBean.idServicio}" class="form-control"
+                                             required="true">
+                                <f:selectItem itemLabel="Seleccione servicio" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{registrarServicioBean.selectItemsOneServicio}" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p:outputLabel for="nroAnexo" value="Número de anexo" class="control-label col-sm-4" />
+                        <div class="col-sm-4">
+                            <p:inputText id="nroAnexo" value="#{registrarServicioBean.nroAnexo}" required="true"
+                                        placeholder="Numero de anexo" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <p:commandButton value="Aceptar" actionListener="#{registrarServicioBean.registrarServicio()}"
+                                    ajax = "false" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
