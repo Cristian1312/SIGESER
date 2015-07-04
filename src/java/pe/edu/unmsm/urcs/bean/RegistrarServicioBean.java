@@ -5,12 +5,11 @@
  */
 package pe.edu.unmsm.urcs.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -33,18 +32,19 @@ import pe.edu.unmsm.urcs.persistencia.NewHibernateUtil;
  * @author Cristian1312
  */
 @ManagedBean
-@ViewScoped
-public class RegistrarServicioBean implements Serializable {
+@SessionScoped
+public class RegistrarServicioBean {
 
     Session session;
     Transaction transaction;
     Usuario usuario;
     
     private String idArea;
-    private String idServicio;
-    private String nroAnexo;
     private List<SelectItem> selectItemsOneArea;
     private List<SelectItem> selectItemsOneServicio;
+    private List<Solicitud> solicitudes;
+    private Solicitud solicitud;
+    private SolicitudId solicitudId;
     private final HttpServletRequest httpServletRequest;
     private final FacesContext facesContext;
     
@@ -52,6 +52,8 @@ public class RegistrarServicioBean implements Serializable {
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         usuario = (Usuario) httpServletRequest.getSession().getAttribute("usuario");
+        this.solicitudId = new SolicitudId();
+        this.solicitud = new Solicitud();
     }
 
     public String getIdArea() {
@@ -62,20 +64,49 @@ public class RegistrarServicioBean implements Serializable {
         this.idArea = idArea;
     }
 
-    public String getIdServicio() {
-        return idServicio;
+    public Solicitud getSolicitud() {
+        return solicitud;
     }
 
-    public void setIdServicio(String idServicio) {
-        this.idServicio = idServicio;
+    public void setSolicitud(Solicitud solicitud) {
+        this.solicitud = solicitud;
     }
 
-    public String getNroAnexo() {
-        return nroAnexo;
+    public SolicitudId getSolicitudId() {
+        return solicitudId;
     }
 
-    public void setNroAnexo(String nroAnexo) {
-        this.nroAnexo = nroAnexo;
+    public void setSolicitudId(SolicitudId solicitudId) {
+        this.solicitudId = solicitudId;
+    }
+
+    public List<Solicitud> getSolicitudes() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            ISolicitudDao solicitudDao = new SolicitudDao();
+            this.transaction = this.session.beginTransaction();
+            this.solicitudes = solicitudDao.getAll(this.session);
+            this.transaction.commit();
+            return this.solicitudes;
+        } catch (Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+            return null;
+        } finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+
+    public void setSolicitudes(List<Solicitud> solicitudes) {
+        this.solicitudes = solicitudes;
     }
 
     public List<SelectItem> getSelectItemsOneArea() {
@@ -123,7 +154,7 @@ public class RegistrarServicioBean implements Serializable {
             this.selectItemsOneServicio = new ArrayList<>();
             IAreaServicioDao areaServicioDao = new AreaServicioDao();
             this.transaction = this.session.beginTransaction();
-            List<Servicio> servicios = areaServicioDao.getServiciosByArea(session, getIdArea());
+            List<Servicio> servicios = areaServicioDao.getServiciosByArea(this.session, getIdArea());
             selectItemsOneServicio.clear();
             for (Servicio servicio : servicios) {
                 SelectItem selectItem = new SelectItem(servicio.getIdServicio(), servicio.getDescripcion());
@@ -157,18 +188,73 @@ public class RegistrarServicioBean implements Serializable {
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
-            SolicitudId solicitudId = new SolicitudId();
-            solicitudId.setUsuarioIdUsuario(usuario.getIdUsuario());
-            solicitudId.setEstadoIdEstado(3);
-            solicitudId.setServicioIdServicio(Integer.parseInt(idServicio));
-            solicitudId.setOperarioIdOperario(1);
+            // solicitudId.setUsuarioIdUsuario(usuario.getIdUsuario());
+            this.solicitudId.setUsuarioIdUsuario(1);
+            this.solicitudId.setEstadoIdEstado(1);
+            this.solicitudId.setOperarioIdOperario(1);
+            this.solicitud.setId(this.solicitudId);
             this.transaction = this.session.beginTransaction();
-            solicitudDao.insertarSolicitud(this.session, new Solicitud(solicitudId, null, null, 
-                    null, null, null, null, null, null, null, null, nroAnexo));
+            solicitudDao.insertarSolicitud(this.session, this.solicitud);
             this.transaction.commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Correcto", "Servicio registrado correctamente"));
             RequestContext.getCurrentInstance().update("servicioForm:mensajeGeneral");
+            this.solicitudId = new SolicitudId();
+            this.solicitud = new Solicitud();
+        }
+        catch(Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        }
+        finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+    
+    public void modificarServicio() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            ISolicitudDao solicitudDao = new SolicitudDao();
+            this.transaction = this.session.beginTransaction();
+            solicitudDao.modificarSolicitud(this.session, this.solicitud);
+            this.transaction.commit();
+            this.solicitudId = new SolicitudId();
+            this.solicitud = new Solicitud();
+        }
+        catch(Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        }
+        finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+    
+    public void eliminarServicio() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            ISolicitudDao solicitudDao = new SolicitudDao();
+            this.transaction = this.session.beginTransaction();
+            solicitudDao.eliminarSolicitud(this.session, this.solicitud);
+            this.transaction.commit();
+            this.solicitudId = new SolicitudId();
+            this.solicitud = new Solicitud();
         }
         catch(Exception ex) {
             if(this.transaction != null) {

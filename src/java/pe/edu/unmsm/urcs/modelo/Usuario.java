@@ -13,7 +13,7 @@ public class Usuario  implements java.io.Serializable {
 
      private Integer idUsuario;
      private Perfil perfil;
-     private String correo;
+     private String email;
      private String pass;
      private String nombre;
      private String apellido;
@@ -29,9 +29,9 @@ public class Usuario  implements java.io.Serializable {
         this.perfil = perfil;
         this.oficinaIdOficina = oficinaIdOficina;
     }
-    public Usuario(Perfil perfil, String correo, String pass, String nombre, String apellido, String anexo, int oficinaIdOficina, Set<Solicitud> solicituds) {
+    public Usuario(Perfil perfil, String email, String pass, String nombre, String apellido, String anexo, int oficinaIdOficina, Set<Solicitud> solicituds) {
        this.perfil = perfil;
-       this.correo = correo;
+       this.email = email;
        this.pass = pass;
        this.nombre = nombre;
        this.apellido = apellido;
@@ -54,12 +54,12 @@ public class Usuario  implements java.io.Serializable {
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
-    public String getCorreo() {
-        return this.correo;
+    public String getEmail() {
+        return this.email;
     }
     
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getPass() {
         return this.pass;

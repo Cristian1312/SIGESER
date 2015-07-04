@@ -37,16 +37,15 @@ public class LoginBean implements Serializable {
     public LoginBean() {
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        if (this.usuario == null) {
-            this.usuario = new Usuario();
-        }
+        this.usuario = new Usuario();
     }
 
-    public void logIn() {
+    public void login() {
         this.session = null;
         this.transaction = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        String view;
+        String view = "";
+        int perfil;
 
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
@@ -57,12 +56,17 @@ public class LoginBean implements Serializable {
                 httpServletRequest.getSession().setAttribute("usuario", usuario);
                 facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido",
                         this.usuario.getNombre() + " " + this.usuario.getApellido());
-                view = "tareasTrabajador.xhtml";
+                perfil = this.usuario.getPerfil().getIdPerfil();
+                switch (perfil) {
+                    case 1: view = "tareasTrabajador.xhtml";break;
+                    case 2: view = "tareasJefaUrcs.xhtml";break;
+                }
             } else {
                 facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
                         "Usuario y/o contraseña incorrecto");
                 view = "index.xhtml";
             }
+            System.out.println("View: " + view);
             this.transaction.commit();
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             context.addCallbackParam("view", view);

@@ -19,7 +19,7 @@ public class UsuarioDao implements IUsuarioDao {
     @Override
     public Usuario verificarUsuario(Session session, Usuario usuario) throws Exception {
         Usuario user = null;
-        String hql = "from Usuario where correo = '"  + usuario.getCorreo()
+        String hql = "from Usuario where email = '"  + usuario.getEmail()
                 + "' and pass = '" + usuario.getPass() + "'";
         Query query = session.createQuery(hql);
         if (!query.list().isEmpty()) {

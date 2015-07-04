@@ -27,9 +27,9 @@
                 <img id="profile-img" class="profile-img-card" src="resources/images/avatar.png" />
                 <p id="profile-name" class="profile-name-card"></p>
                 <h:form class="form-signin">
-                    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                    <p:growl id="growl" sticky="false" showDetail="true" life="3000" />
                     <span id="reauth-email" class="reauth-email"></span>
-                    <p:inputText id="correo" value="#{loginBean.usuario.correo}"
+                    <p:inputText id="correo" value="#{loginBean.usuario.email}"
                                  required="true" label="correo" placeholder="Correo"
                                  class="form-control"/>
                     <p:password id="password" value="#{loginBean.usuario.pass}"
@@ -40,9 +40,9 @@
                             <input type="checkbox" value="remember-me" /> Recuérdame
                         </label>
                     </div>
-                    <p:commandButton value="Login" update="growl" actionListener="#{loginBean.logIn}"
-                                oncomplete="handleLoginRequest(xhr, status, args)" 
-                                class="btn btn-lg btn-primary btn-block btn-signin"/>
+                    <p:commandButton value="Login" update="growl" actionListener="#{loginBean.login()}"
+                                     oncomplete="handleLoginRequest(xhr, status, args)"
+                                     class="btn btn-lg btn-primary btn-block btn-signin"/>
                 </h:form>
                 <a href="#" class="forgot-password">
                     ¿Olvidaste la contraseña?

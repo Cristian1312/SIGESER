@@ -11,8 +11,8 @@
         <many-to-one name="perfil" class="pe.edu.unmsm.urcs.modelo.Perfil" fetch="select">
             <column name="Perfil_idPerfil" not-null="true" />
         </many-to-one>
-        <property name="correo" type="string">
-            <column name="correo" length="45" />
+        <property name="email" type="string">
+            <column name="email" length="45" />
         </property>
         <property name="pass" type="string">
             <column name="pass" length="11" />
