@@ -5,6 +5,7 @@
  */
 package pe.edu.unmsm.urcs.interfaces;
 
+import java.util.List;
 import org.hibernate.Session;
 import pe.edu.unmsm.urcs.modelo.Operario;
 
@@ -13,6 +14,6 @@ import pe.edu.unmsm.urcs.modelo.Operario;
  * @author SILVIA
  */
 public interface IOperarioDao {
-
+    public List<Operario> getAll(Session session) throws Exception;
     public void insertarOperario(Session session, Operario operario) throws Exception;
 }
