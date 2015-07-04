@@ -39,6 +39,7 @@ public class OperarioBean implements Serializable{
     private Area area;
     private String idArea;
     private List<SelectItem> selectItemsOneArea;
+    private List<Operario> operarios;
     private final HttpServletRequest httpServletRequest;
     private final FacesContext facesContext;
     
@@ -136,5 +137,40 @@ public class OperarioBean implements Serializable{
                 this.session.close();
             }
         }
+    }
+
+    /**
+     * @return the operarios
+     */
+    public List<Operario> getOperarios() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            IOperarioDao operarioDao = new OperarioDao();
+            this.transaction = this.session.beginTransaction();
+            this.operarios = operarioDao.getAll(this.session);
+            this.transaction.commit();
+            return this.operarios;
+        } catch (Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+            return null;
+        } finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+
+    /**
+     * @param operarios the operarios to set
+     */
+    public void setOperarios(List<Operario> operarios) {
+        this.operarios = operarios;
     }
 }

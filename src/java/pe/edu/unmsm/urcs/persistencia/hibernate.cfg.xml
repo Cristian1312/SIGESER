@@ -9,7 +9,7 @@
     <!--property name="hibernate.connection.username">eleganti_vane</property>
     <property name="hibernate.connection.password">v4n3554</property-->
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">hybridmeteora</property>
+    <property name="hibernate.connection.password"></property>
     <property name="hibernate.current_session_context_class">thread</property>
     <property name="hibernate.show_sql">true</property>
     <mapping resource="pe/edu/unmsm/urcs/modelo/Perfil.hbm.xml"/>
