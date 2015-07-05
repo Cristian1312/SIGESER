@@ -16,4 +16,7 @@ import pe.edu.unmsm.urcs.modelo.Operario;
 public interface IOperarioDao {
     public List<Operario> getAll(Session session) throws Exception;
     public void insertarOperario(Session session, Operario operario) throws Exception;
+    public Operario verificarOperario(Session session, Operario operario)throws Exception;
+    public void modificarOperario(Session session, Operario operario) throws Exception;
+    public void eliminarOperario(Session session, Operario operario) throws Exception;
 }

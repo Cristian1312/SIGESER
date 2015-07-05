@@ -7,6 +7,7 @@ package pe.edu.unmsm.urcs.dao;
 
 import java.util.List;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import pe.edu.unmsm.urcs.interfaces.IOperarioDao;
 import pe.edu.unmsm.urcs.modelo.Operario;
@@ -16,7 +17,16 @@ public class OperarioDao implements IOperarioDao {
     @Override
     public void insertarOperario(Session session, Operario operario) throws Exception {
         session.save(operario);
-        System.out.println("inserto operario");
+    }
+
+    @Override
+    public void modificarOperario(Session session, Operario operario) throws Exception {
+        session.update(operario);
+    }
+
+    @Override
+    public void eliminarOperario(Session session, Operario operario) throws Exception {
+        session.delete(operario);
     }
 
     @Override
@@ -28,10 +38,22 @@ public class OperarioDao implements IOperarioDao {
             Hibernate.initialize(ope.getAnexo());
             Hibernate.initialize(ope.getNombre());
             Hibernate.initialize(ope.getTelefono());
+            Hibernate.initialize(ope.getCorreo());
             Hibernate.initialize(ope.getArea().getDescripcion());
 
         }
 
         return session.createCriteria(Operario.class).list();
+    }
+
+    @Override
+    public Operario verificarOperario(Session session, Operario operario) throws Exception {
+        Operario oper = null;
+        String hql = "from Operario where correo = '" + operario.getCorreo() + "'";
+        Query query = session.createQuery(hql);
+        if (!query.list().isEmpty()) {
+            oper = (Operario) query.uniqueResult();
+        }
+        return oper;
     }
 }

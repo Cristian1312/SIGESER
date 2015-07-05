@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/06/2015 02:00:36 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 05/07/2015 12:56:49 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pe.edu.unmsm.urcs.modelo.Operario" table="Operario" catalog="eleganti_urcs" optimistic-lock="version">
+    <class name="pe.edu.unmsm.urcs.modelo.Operario" table="operario" catalog="eleganti_urcs" optimistic-lock="version">
         <id name="idOperario" type="java.lang.Integer">
             <column name="idOperario" />
             <generator class="identity" />
@@ -26,7 +26,10 @@
         <property name="anexo" type="string">
             <column name="anexo" length="4" />
         </property>
-        <set name="solicituds" table="Solicitud" inverse="true" lazy="true" fetch="select">
+        <property name="correo" type="string">
+            <column name="correo" length="45" />
+        </property>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="Operario_idOperario" not-null="true" />
             </key>

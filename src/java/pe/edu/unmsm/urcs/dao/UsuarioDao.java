@@ -19,13 +19,31 @@ public class UsuarioDao implements IUsuarioDao {
     @Override
     public Usuario verificarUsuario(Session session, Usuario usuario) throws Exception {
         Usuario user = null;
-        String hql = "from Usuario where email = '"  + usuario.getEmail()
+        String hql = "from Usuario where email = '" + usuario.getEmail()
                 + "' and pass = '" + usuario.getPass() + "'";
         Query query = session.createQuery(hql);
         if (!query.list().isEmpty()) {
             user = (Usuario) query.uniqueResult();
         }
-        
+
         return user;
+    }
+
+    @Override
+    public Usuario verificarCorreo(Session session, Usuario usuario) throws Exception {
+        Usuario operario = null;
+        String hql = "from Usuario where email = '" + usuario.getEmail() + "'";
+        Query querys = session.createQuery(hql);
+        if (!querys.list().isEmpty()) {
+            operario = (Usuario) querys.uniqueResult();
+            
+        }
+        return operario;
+    }
+    
+    @Override
+        public void modificarUsuario(Session session, Usuario usuario) throws Exception {
+        session.update(usuario);
+        System.out.println("usuario modificado");
     }
 }

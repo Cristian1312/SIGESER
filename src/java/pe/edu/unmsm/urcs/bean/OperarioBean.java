@@ -19,10 +19,13 @@ import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import pe.edu.unmsm.urcs.dao.AreaServicioDao;
 import pe.edu.unmsm.urcs.dao.OperarioDao;
+import pe.edu.unmsm.urcs.dao.UsuarioDao;
 import pe.edu.unmsm.urcs.interfaces.IAreaServicioDao;
 import pe.edu.unmsm.urcs.interfaces.IOperarioDao;
 import pe.edu.unmsm.urcs.modelo.Area;
 import pe.edu.unmsm.urcs.modelo.Operario;
+import pe.edu.unmsm.urcs.modelo.Perfil;
+import pe.edu.unmsm.urcs.modelo.Usuario;
 import pe.edu.unmsm.urcs.persistencia.NewHibernateUtil;
 
 /**
@@ -31,23 +34,30 @@ import pe.edu.unmsm.urcs.persistencia.NewHibernateUtil;
  */
 @ManagedBean
 @ViewScoped
-public class OperarioBean implements Serializable{
+public class OperarioBean implements Serializable {
 
     Session session;
     Transaction transaction;
+
+    private Usuario usuario;
     private Operario operario;
+    private String correo;
     private Area area;
     private String idArea;
     private List<SelectItem> selectItemsOneArea;
     private List<Operario> operarios;
     private final HttpServletRequest httpServletRequest;
     private final FacesContext facesContext;
-    
+    private Perfil perfil;
+    private FacesMessage facesMessage;
+
     public OperarioBean() {
         this.operario = new Operario();
         this.area = new Area();
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        this.perfil = new Perfil();
+        this.usuario = new Usuario();
     }
 
     public Operario getOperario() {
@@ -77,7 +87,7 @@ public class OperarioBean implements Serializable{
     public List<SelectItem> getSelectItemsOneArea() {
         this.session = null;
         this.transaction = null;
-        
+
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             this.selectItemsOneArea = new ArrayList<>();
@@ -90,17 +100,17 @@ public class OperarioBean implements Serializable{
                 this.selectItemsOneArea.add(selectItem);
             }
             this.transaction.commit();
-            
+
             return selectItemsOneArea;
         } catch (Exception ex) {
-            if(this.transaction != null) {
+            if (this.transaction != null) {
                 transaction.rollback();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
             return null;
         } finally {
-            if(this.session != null) {
+            if (this.session != null) {
                 this.session.close();
             }
         }
@@ -109,21 +119,60 @@ public class OperarioBean implements Serializable{
     public void setSelectItemsOneArea(List<SelectItem> selectItemsOneArea) {
         this.selectItemsOneArea = selectItemsOneArea;
     }
-    
+
+    public void setOperarios(List<Operario> operarios) {
+        this.operarios = operarios;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public void registrarOperario() {
         this.session = null;
         this.transaction = null;
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
+            UsuarioDao usuarioDao = new UsuarioDao();
             IOperarioDao operarioDao = new OperarioDao();
-            this.area.setIdArea(Integer.parseInt(idArea));
-            this.operario.setArea(this.area);
             this.transaction = this.session.beginTransaction();
-            operarioDao.insertarOperario(this.session, operario);
-            this.transaction.commit();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_INFO, "Correcto", "Operario registrado correctamente"));
-            RequestContext.getCurrentInstance().update("operarioForm:mensajeGeneral");
+            this.usuario = usuarioDao.verificarCorreo(this.session, this.usuario);
+            if (this.usuario != null) {
+                this.area.setIdArea(Integer.parseInt(idArea));
+                this.perfil.setIdPerfil(3);
+                this.usuario.setPerfil(this.perfil);
+                this.operario.setArea(this.area);
+                this.operario.setCorreo(this.usuario.getEmail());
+                operarioDao.insertarOperario(this.session, this.operario);
+                this.transaction.commit();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_INFO, "Correcto", "Operario registrado correctamente"));
+                RequestContext.getCurrentInstance().update("operarioForm:mensajeGeneral");
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo Inválido"));
+            }
+
         } catch (Exception ex) {
             if (this.transaction != null) {
                 transaction.rollback();
@@ -131,9 +180,8 @@ public class OperarioBean implements Serializable{
             ex.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
-        }
-        finally {
-            if(this.session != null) {
+        } finally {
+            if (this.session != null) {
                 this.session.close();
             }
         }
@@ -145,7 +193,7 @@ public class OperarioBean implements Serializable{
     public List<Operario> getOperarios() {
         this.session = null;
         this.transaction = null;
-        
+
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             IOperarioDao operarioDao = new OperarioDao();
@@ -154,23 +202,71 @@ public class OperarioBean implements Serializable{
             this.transaction.commit();
             return this.operarios;
         } catch (Exception ex) {
-            if(this.transaction != null) {
+            if (this.transaction != null) {
                 transaction.rollback();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
             return null;
         } finally {
-            if(this.session != null) {
+            if (this.session != null) {
                 this.session.close();
             }
         }
     }
 
-    /**
-     * @param operarios the operarios to set
-     */
-    public void setOperarios(List<Operario> operarios) {
-        this.operarios = operarios;
+    public void modificarOperario() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            IOperarioDao operarioDao = new OperarioDao();
+            this.transaction = this.session.beginTransaction();
+            this.area.setIdArea(Integer.parseInt(idArea));
+            this.operario.setArea(this.area);
+            operarioDao.modificarOperario(this.session, this.operario);
+            this.operario = new Operario();
+            this.transaction.commit();
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
     }
+
+    public void eliminarOperario() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            IOperarioDao operarioDao = new OperarioDao();
+
+            this.transaction = this.session.beginTransaction();
+            this.perfil.setIdPerfil(1);
+            this.usuario.setPerfil(this.perfil);
+            operarioDao.eliminarOperario(this.session, this.operario);
+            UsuarioDao usuarioDao = new UsuarioDao();
+            usuarioDao.modificarUsuario(this.session, this.usuario);
+            this.transaction.commit();
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+
 }

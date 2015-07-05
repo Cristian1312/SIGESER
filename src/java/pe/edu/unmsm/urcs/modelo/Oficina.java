@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 29/06/2015 02:00:34 PM by Hibernate Tools 4.3.1
+// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
 
 
 

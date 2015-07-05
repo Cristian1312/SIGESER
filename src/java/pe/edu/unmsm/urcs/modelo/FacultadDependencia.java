@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 29/06/2015 02:00:34 PM by Hibernate Tools 4.3.1
+// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,12 +13,12 @@ public class FacultadDependencia  implements java.io.Serializable {
 
      private Integer idFacultadDependencia;
      private String descripcion;
-     private Set<Oficina> oficinas = new HashSet<Oficina>(0);
+     private Set oficinas = new HashSet(0);
 
     public FacultadDependencia() {
     }
 
-    public FacultadDependencia(String descripcion, Set<Oficina> oficinas) {
+    public FacultadDependencia(String descripcion, Set oficinas) {
        this.descripcion = descripcion;
        this.oficinas = oficinas;
     }
@@ -37,11 +37,11 @@ public class FacultadDependencia  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Set<Oficina> getOficinas() {
+    public Set getOficinas() {
         return this.oficinas;
     }
     
-    public void setOficinas(Set<Oficina> oficinas) {
+    public void setOficinas(Set oficinas) {
         this.oficinas = oficinas;
     }
 

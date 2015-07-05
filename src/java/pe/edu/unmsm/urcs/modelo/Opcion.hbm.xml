@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/06/2015 02:00:36 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 05/07/2015 12:56:49 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pe.edu.unmsm.urcs.modelo.Opcion" table="Opcion" catalog="eleganti_urcs" optimistic-lock="version">
+    <class name="pe.edu.unmsm.urcs.modelo.Opcion" table="opcion" catalog="eleganti_urcs" optimistic-lock="version">
         <composite-id name="id" class="pe.edu.unmsm.urcs.modelo.OpcionId">
             <key-property name="idOpcion" type="int">
                 <column name="idOpcion" />
