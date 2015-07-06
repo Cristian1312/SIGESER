@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 29/06/2015 02:00:34 PM by Hibernate Tools 4.3.1
+// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -18,7 +18,8 @@ public class Operario  implements java.io.Serializable {
      private String apMaterno;
      private String telefono;
      private String anexo;
-     private Set<Solicitud> solicituds = new HashSet<Solicitud>(0);
+     private String correo;
+     private Set solicituds = new HashSet(0);
 
     public Operario() {
     }
@@ -27,13 +28,14 @@ public class Operario  implements java.io.Serializable {
     public Operario(Area area) {
         this.area = area;
     }
-    public Operario(Area area, String nombre, String apPaterno, String apMaterno, String telefono, String anexo, Set<Solicitud> solicituds) {
+    public Operario(Area area, String nombre, String apPaterno, String apMaterno, String telefono, String anexo, String correo, Set solicituds) {
        this.area = area;
        this.nombre = nombre;
        this.apPaterno = apPaterno;
        this.apMaterno = apMaterno;
        this.telefono = telefono;
        this.anexo = anexo;
+       this.correo = correo;
        this.solicituds = solicituds;
     }
    
@@ -86,11 +88,18 @@ public class Operario  implements java.io.Serializable {
     public void setAnexo(String anexo) {
         this.anexo = anexo;
     }
-    public Set<Solicitud> getSolicituds() {
+    public String getCorreo() {
+        return this.correo;
+    }
+    
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+    public Set getSolicituds() {
         return this.solicituds;
     }
     
-    public void setSolicituds(Set<Solicitud> solicituds) {
+    public void setSolicituds(Set solicituds) {
         this.solicituds = solicituds;
     }
 

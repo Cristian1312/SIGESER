@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 29/06/2015 02:00:34 PM by Hibernate Tools 4.3.1
+// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -12,7 +12,6 @@ public class Solicitud  implements java.io.Serializable {
 
      private SolicitudId id;
      private Estado estado;
-     private Informe informe;
      private Operario operario;
      private Servicio servicio;
      private Usuario usuario;
@@ -27,19 +26,17 @@ public class Solicitud  implements java.io.Serializable {
     }
 
 	
-    public Solicitud(SolicitudId id, Estado estado, Informe informe, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado) {
+    public Solicitud(SolicitudId id, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado) {
         this.id = id;
         this.estado = estado;
-        this.informe = informe;
         this.operario = operario;
         this.servicio = servicio;
         this.usuario = usuario;
         this.fechaEnviado = fechaEnviado;
     }
-    public Solicitud(SolicitudId id, Estado estado, Informe informe, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado, Date fechaProceso, Date fechaPendienteReasig, Date fechaFinalizado, String motivoReasignacion, String solicitudcol) {
+    public Solicitud(SolicitudId id, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado, Date fechaProceso, Date fechaPendienteReasig, Date fechaFinalizado, String motivoReasignacion, String solicitudcol) {
        this.id = id;
        this.estado = estado;
-       this.informe = informe;
        this.operario = operario;
        this.servicio = servicio;
        this.usuario = usuario;
@@ -64,13 +61,6 @@ public class Solicitud  implements java.io.Serializable {
     
     public void setEstado(Estado estado) {
         this.estado = estado;
-    }
-    public Informe getInforme() {
-        return this.informe;
-    }
-    
-    public void setInforme(Informe informe) {
-        this.informe = informe;
     }
     public Operario getOperario() {
         return this.operario;

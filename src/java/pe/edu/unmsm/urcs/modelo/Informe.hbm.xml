@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/06/2015 02:00:36 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 05/07/2015 12:56:49 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="pe.edu.unmsm.urcs.modelo.Informe" table="Informe" catalog="eleganti_urcs" optimistic-lock="version">
+    <class name="pe.edu.unmsm.urcs.modelo.Informe" table="informe" catalog="eleganti_urcs" optimistic-lock="version">
         <id name="idInforme" type="java.lang.Integer">
             <column name="idInforme" />
             <generator class="identity" />
@@ -11,11 +11,5 @@
         <property name="descripcion" type="string">
             <column name="descripcion" length="1000" />
         </property>
-        <set name="solicituds" table="Solicitud" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="Informe_idInforme" not-null="true" />
-            </key>
-            <one-to-many class="pe.edu.unmsm.urcs.modelo.Solicitud" />
-        </set>
     </class>
 </hibernate-mapping>

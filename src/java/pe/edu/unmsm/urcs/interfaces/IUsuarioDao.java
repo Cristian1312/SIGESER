@@ -14,4 +14,6 @@ import pe.edu.unmsm.urcs.modelo.Usuario;
  */
 public interface IUsuarioDao {
     public Usuario verificarUsuario(Session session, Usuario usuario) throws Exception;
+    public Usuario verificarCorreo(Session session, Usuario usuario) throws Exception;
+    public void modificarUsuario(Session session, Usuario usuario) throws Exception;
 }
