@@ -17,10 +17,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import pe.edu.unmsm.urcs.dao.AreaServicioDao;
+import pe.edu.unmsm.urcs.dao.EstadoDao;
 import pe.edu.unmsm.urcs.dao.SolicitudDao;
-import pe.edu.unmsm.urcs.interfaces.IAreaServicioDao;;
+import pe.edu.unmsm.urcs.interfaces.IAreaServicioDao;
+import pe.edu.unmsm.urcs.interfaces.IEstadoDao;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Area;
+import pe.edu.unmsm.urcs.modelo.Estado;
 import pe.edu.unmsm.urcs.modelo.Servicio;
 import pe.edu.unmsm.urcs.modelo.Solicitud;
 import pe.edu.unmsm.urcs.modelo.SolicitudId;
@@ -40,8 +43,10 @@ public class RegistrarServicioBean {
     Usuario usuario;
     
     private String idArea;
+    private String idEstado;
     private List<SelectItem> selectItemsOneArea;
     private List<SelectItem> selectItemsOneServicio;
+    private List<String> estados;
     private List<Solicitud> solicitudes;
     private Solicitud solicitud;
     private SolicitudId solicitudId;
@@ -62,6 +67,14 @@ public class RegistrarServicioBean {
 
     public void setIdArea(String idArea) {
         this.idArea = idArea;
+    }
+
+    public String getIdEstado() {
+        return idEstado;
+    }
+
+    public void setIdEstado(String idEstado) {
+        this.idEstado = idEstado;
     }
 
     public Solicitud getSolicitud() {
@@ -108,7 +121,43 @@ public class RegistrarServicioBean {
     public void setSolicitudes(List<Solicitud> solicitudes) {
         this.solicitudes = solicitudes;
     }
+    
+    public List<String> getEstados() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            this.estados = new ArrayList<>();
+            IEstadoDao estadoDao = new EstadoDao();
+            this.transaction = this.session.beginTransaction();
+            List<Estado> estadosTemp = estadoDao.getAll(this.session);
+            for (Estado estado : estadosTemp) {
+                this.estados.add(estado.getDescripcion());
+            }
+            this.transaction.commit();
+            
+            return this.estados;
+        } catch (Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+            return null;
+        } finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
 
+    public void setEstados(List<String> estados) {
+        this.estados = estados;
+    }
+
+    
+    
     public List<SelectItem> getSelectItemsOneArea() {
         this.session = null;
         this.transaction = null;

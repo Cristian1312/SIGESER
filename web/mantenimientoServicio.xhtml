@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>SIGESER-Mantenimiento de servicio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+        <link rel="shortcut icon" href="resources/images/favicon.png" type="image/x-icon" />
+    </h:head>
+    <h:body>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Mantenimiento de solicitud de servicio</b></h3>
+            </div>
+            <div id="grid" class="panel-body">
+                <h:form id="formMostrar">
+                    <p:dataTable var="sol" value="#{registrarServicioBean.solicitudes}" emptyMessage="No hay solicitudes registradas"
+                                 paginator="true" rows="10" paginatorPosition="top" widgetVar="tablaSolicitudes"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10"
+                                 style="width: 100%;margin: auto;">
+                        <p:column headerText="Id Solicitud">
+                            <h:outputText value="#{sol.id.idSolicitud}" />
+                        </p:column>
+                        <p:column headerText="Fecha de envío">
+                            <h:outputText value="#{sol.fechaEnviado}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Anexo">
+                            <h:outputText value="#{sol.solicitudcol}" />
+                        </p:column>
+                        <p:column headerText="Usuario">
+                            <h:outputText value="#{sol.usuario.nombre} #{sol.usuario.apellido}" />
+                        </p:column>
+                        <p:column filterBy="#{sol.estado.descripcion}" headerText="Estado" footerText="in" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Estados" onchange="PF('tablaSolicitudes').filter()"
+                                            panelStyle="width:240px" scrollHeight="150">
+                                    <f:selectItems value="#{registrarServicioBean.estados}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{sol.estado.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Servicio">
+                            <h:outputText value="#{sol.servicio.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Modificar">
+                            <p:commandButton value="Modificar" oncomplete="PF('dlgmodificar').show();" update=":formModificar">
+                                <f:setPropertyActionListener target="#{registrarServicioBean.solicitud}" value="#{sol}" />                        
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="Eliminar">
+                            <p:commandButton value="Eliminar" oncomplete="PF('dlgeliminar').show()">
+                                <f:setPropertyActionListener target="#{registrarServicioBean.solicitud}" value="#{sol}" />                        
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog id="dlg" header="Modificar Solicitud de Servicio" showEffect="explode" hideEffect="explode"
+                      widgetVar="dlgmodificar" modal="true" resizable="false">
+                    <h:form id="formModificar" class="form-horizontal">
+                        <!--p:growl id="mensajeGeneral" showDetail="true"/-->
+                        <!--div class="form-group">
+                            <p:outputLabel for="area" value="Area" class="control-label col-sm-4" />
+                            <div class="col-sm-8">
+                                <h:selectOneMenu id="area" value="" class="form-control"
+                                                 required="true">
+                                    <f:selectItem itemLabel="Seleccione área" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="" />
+                                    <p:ajax update="servicio" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div-->
+                        <div class="form-group">
+                            <p:outputLabel for="servicio" value="Servicio" class="control-label col-sm-4" />
+                            <div class="col-sm-8">
+                                <h:selectOneMenu id="servicio" value="#{registrarServicioBean.solicitudId.servicioIdServicio}" class="form-control"
+                                                 required="true">
+                                    <f:selectItem itemLabel="Seleccione servicio" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{registrarServicioBean.selectItemsOneServicio}" />
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p:outputLabel for="nroAnexo" value="Número de anexo" class="control-label col-sm-4" />
+                            <div class="col-sm-8">
+                                <p:inputText id="nroAnexo" value="#{registrarServicioBean.solicitud.solicitudcol}" required="true"
+                                                placeholder="Numero de anexo" class="form-control" />
+                            </div>
+                        </div>
+                        <p:commandButton value="Modificar" update=":formMostrar"
+                                         actionListener="#{registrarServicioBean.modificarServicio()}"
+                                         oncomplete="PF('dlgmodificar').hide();"
+                                         class="btn btn-primary" />
+                    </h:form>
+                </p:dialog>
+                <p:dialog id="dlg2" header="Eliminar Solicitud de Servicio" showEffect="explode" hideEffect="explode"
+                          widgetVar="dlgeliminar" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formEliminar">
+                        <h:outputText value="¿Desea eliminar?" />
+                        <p:commandButton value="Si" actionListener="#{registrarServicioBean.eliminarServicio()}"
+                                         update=":formMostrar"
+                                         oncomplete="PF('dlgeliminar').hide();" />
+                        <p:commandButton value="No" onclick="dlg2.hide();" />
+                    </h:form>
+                </p:dialog>
+            </div>
+        </div>
+    </h:body>
+</html>

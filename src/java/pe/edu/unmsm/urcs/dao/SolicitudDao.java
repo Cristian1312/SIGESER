@@ -6,8 +6,10 @@
 package pe.edu.unmsm.urcs.dao;
 
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Solicitud;
 
