@@ -42,19 +42,6 @@ public class SolicitudDao implements ISolicitudDao{
         }
         return session.createQuery("from Solicitud where estado.idEstado=1").list();
     }
-    /*
-    @Override
-    public List<Solicitud> getsolicitudesPendientes(Session session, SolicitudID id) throws Exception{
-     
-        List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado_idEstado = 1").list();
-        for (Solicitud sol : solicitudes) {
-            Hibernate.initialize(sol.getUsuario());
-            Hibernate.initialize(sol.getEstado());
-            Hibernate.initialize(sol.getServicio());
-        }
-        return session.createQuery("from Solicitud where estado.idEstado=1" and "from Solicitud where SolicitudId=id, ").list();
-    }
-    */
     
     @Override
     public void insertarSolicitud(Session session, Solicitud solicitud) throws Exception {
