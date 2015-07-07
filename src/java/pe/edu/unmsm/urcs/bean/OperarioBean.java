@@ -46,16 +46,12 @@ public class OperarioBean implements Serializable {
     private String idArea;
     private List<SelectItem> selectItemsOneArea;
     private List<Operario> operarios;
-    private final HttpServletRequest httpServletRequest;
-    private final FacesContext facesContext;
     private Perfil perfil;
     private FacesMessage facesMessage;
 
     public OperarioBean() {
         this.operario = new Operario();
         this.area = new Area();
-        facesContext = FacesContext.getCurrentInstance();
-        httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         this.perfil = new Perfil();
         this.usuario = new Usuario();
     }

@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
@@ -50,13 +49,10 @@ public class RegistrarServicioBean {
     private List<Solicitud> solicitudes;
     private Solicitud solicitud;
     private SolicitudId solicitudId;
-    private final HttpServletRequest httpServletRequest;
-    private final FacesContext facesContext;
     
     public RegistrarServicioBean() {
-        facesContext = FacesContext.getCurrentInstance();
-        httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        usuario = (Usuario) httpServletRequest.getSession().getAttribute("usuario");
+        this.usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext()
+                .getSessionMap().get("usuario");
         this.solicitudId = new SolicitudId();
         this.solicitud = new Solicitud();
     }
@@ -237,8 +233,7 @@ public class RegistrarServicioBean {
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
-            // solicitudId.setUsuarioIdUsuario(usuario.getIdUsuario());
-            this.solicitudId.setUsuarioIdUsuario(1);
+            solicitudId.setUsuarioIdUsuario(usuario.getIdUsuario());
             this.solicitudId.setEstadoIdEstado(1);
             this.solicitudId.setOperarioIdOperario(1);
             this.solicitud.setId(this.solicitudId);

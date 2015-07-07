@@ -10,7 +10,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
@@ -30,13 +29,9 @@ public class LoginBean implements Serializable {
     Transaction transaction;
 
     private Usuario usuario;
-    private final HttpServletRequest httpServletRequest;
-    private final FacesContext facesContext;
     private FacesMessage facesMessage;
 
     public LoginBean() {
-        facesContext = FacesContext.getCurrentInstance();
-        httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         this.usuario = new Usuario();
     }
 
@@ -53,7 +48,8 @@ public class LoginBean implements Serializable {
             this.transaction = this.session.beginTransaction();
             this.usuario = usuarioDao.verificarUsuario(this.session, this.usuario);
             if (this.usuario != null) {
-                httpServletRequest.getSession().setAttribute("usuario", usuario);
+                FacesContext.getCurrentInstance().getExternalContext()
+                        .getSessionMap().put("usuario", this.usuario);
                 facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido",
                         this.usuario.getNombre() + " " + this.usuario.getApellido());
                 perfil = this.usuario.getPerfil().getIdPerfil();
@@ -66,21 +62,27 @@ public class LoginBean implements Serializable {
                         "Usuario y/o contraseña incorrecto");
                 view = "index.xhtml";
             }
-            System.out.println("View: " + view);
             this.transaction.commit();
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             context.addCallbackParam("view", view);
         } catch (Exception ex) {
-            if(this.transaction != null) {
+            if (this.transaction != null) {
                 transaction.rollback();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
         } finally {
-            if(this.session != null) {
+            if (this.session != null) {
                 this.session.close();
             }
         }
+    }
+
+    public void cerrarSesion() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().getExternalContext()
+                .invalidateSession();
+        context.addCallbackParam("view", "index.xhtml");
     }
 
     public Usuario getUsuario() {
