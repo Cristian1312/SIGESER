@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 05/07/2015 12:56:49 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pe.edu.unmsm.urcs.modelo.Usuario" table="usuario" catalog="eleganti_urcs" optimistic-lock="version">
+        <id name="idUsuario" type="java.lang.Integer">
+            <column name="idUsuario" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="perfil" class="pe.edu.unmsm.urcs.modelo.Perfil" fetch="select">
+            <column name="Perfil_idPerfil" not-null="true" />
+        </many-to-one>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="pass" type="string">
+            <column name="pass" length="11" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="apellido" length="45" />
+        </property>
+        <property name="anexo" type="string">
+            <column name="anexo" length="4" />
+        </property>
+        <property name="oficinaIdOficina" type="int">
+            <column name="Oficina_idOficina" not-null="true" />
+        </property>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Usuario_idUsuario" not-null="true" />
+            </key>
+            <one-to-many class="pe.edu.unmsm.urcs.modelo.Solicitud" />
+        </set>
+    </class>
+</hibernate-mapping>
