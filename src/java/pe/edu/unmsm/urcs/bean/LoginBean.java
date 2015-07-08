@@ -56,6 +56,7 @@ public class LoginBean implements Serializable {
                 switch (perfil) {
                     case 1: view = "tareasTrabajador.xhtml";break;
                     case 2: view = "tareasJefaUrcs.xhtml";break;
+                    case 3: view = "tareasOperario.xhtml";break;
                 }
             } else {
                 facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",

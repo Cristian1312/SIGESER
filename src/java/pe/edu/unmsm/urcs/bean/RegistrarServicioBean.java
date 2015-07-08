@@ -43,6 +43,7 @@ public class RegistrarServicioBean {
     
     private String idArea;
     private String idEstado;
+    private String idSolicitud;
     private List<SelectItem> selectItemsOneArea;
     private List<SelectItem> selectItemsOneServicio;
     private List<String> estados;
@@ -73,6 +74,14 @@ public class RegistrarServicioBean {
         this.idEstado = idEstado;
     }
 
+    public String getIdSolicitud() {
+        return idSolicitud;
+    }
+
+    public void setIdSolicitud(String idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }
+
     public Solicitud getSolicitud() {
         return solicitud;
     }
@@ -97,7 +106,8 @@ public class RegistrarServicioBean {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
             this.transaction = this.session.beginTransaction();
-            this.solicitudes = solicitudDao.getsolicitudesPendientes(this.session);
+            this.solicitudes = solicitudDao.getsolicitudesPendientes(this.session,
+                    this.usuario.getIdUsuario());
             this.transaction.commit();
             return this.solicitudes;
         } catch (Exception ex) {

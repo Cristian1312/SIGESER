@@ -6,10 +6,8 @@
 package pe.edu.unmsm.urcs.dao;
 
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Solicitud;
 
@@ -32,15 +30,16 @@ public class SolicitudDao implements ISolicitudDao{
     }
     
     @Override
-    public List<Solicitud> getsolicitudesPendientes(Session session) throws Exception{
+    public List<Solicitud> getsolicitudesPendientes(Session session, Integer idUsuario) throws Exception{
      
-        List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado_idEstado = 1").list();
+        List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado.idEstado = 1 "
+                + "and usuario.idUsuario = " + idUsuario).list();
         for (Solicitud sol : solicitudes) {
             Hibernate.initialize(sol.getUsuario());
             Hibernate.initialize(sol.getEstado());
             Hibernate.initialize(sol.getServicio());
         }
-        return session.createQuery("from Solicitud where estado.idEstado=1").list();
+        return solicitudes;
     }
     
     @Override
