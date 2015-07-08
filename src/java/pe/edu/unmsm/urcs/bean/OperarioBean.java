@@ -148,12 +148,13 @@ public class OperarioBean implements Serializable {
         this.session = null;
         this.transaction = null;
         try {
+            
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             UsuarioDao usuarioDao = new UsuarioDao();
             IOperarioDao operarioDao = new OperarioDao();
             this.transaction = this.session.beginTransaction();
             this.usuario = usuarioDao.verificarCorreo(this.session, this.usuario);
-            if (this.usuario != null) {
+            if (this.usuario != null && correoexiste(this.usuario.getEmail())==false) {
                 this.area.setIdArea(Integer.parseInt(idArea));
                 this.perfil.setIdPerfil(3);
                 this.usuario.setPerfil(this.perfil);
@@ -166,7 +167,12 @@ public class OperarioBean implements Serializable {
                 RequestContext.getCurrentInstance().update("operarioForm:mensajeGeneral");
 
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo Inválido"));
+                if(correoexiste(this.usuario.getEmail())){
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo ya existe"));   
+                }
+                else{
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo Inválido"));
+                }
             }
 
         } catch (Exception ex) {
@@ -263,6 +269,15 @@ public class OperarioBean implements Serializable {
                 this.session.close();
             }
         }
+    }
+    
+    public boolean correoexiste( String correo){
+        for (Operario ope: this.operarios){
+            if(correo.equals(ope.getCorreo())){
+                return true; 
+            }
+        }
+        return false;
     }
 
 }
