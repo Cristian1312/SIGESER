@@ -47,6 +47,7 @@ public class RegistrarServicioBean {
     private List<SelectItem> selectItemsOneArea;
     private List<SelectItem> selectItemsOneServicio;
     private List<String> estados;
+    private List<String> idsSolicitud;
     private List<Solicitud> solicitudes;
     private Solicitud solicitud;
     private SolicitudId solicitudId;
@@ -187,8 +188,40 @@ public class RegistrarServicioBean {
         this.estados = estados;
     }
 
-    
-    
+    public List<String> getIdsSolicitud() {
+        this.session = null;
+        this.transaction = null;
+        
+        try {
+            this.session = NewHibernateUtil.getSessionFactory().openSession();
+            this.idsSolicitud = new ArrayList<>();
+            ISolicitudDao solicitudDao = new SolicitudDao();
+            this.transaction = this.session.beginTransaction();
+            List<Solicitud> solicitudesTemp = solicitudDao.getAll(this.session);
+            for (Solicitud solicitud : solicitudesTemp) {
+                this.idsSolicitud.add(String.valueOf(solicitud.getId().getIdSolicitud()));
+            }
+            this.transaction.commit();
+            System.out.println("Size: " + this.idsSolicitud.size());
+            return this.idsSolicitud;
+        } catch (Exception ex) {
+            if(this.transaction != null) {
+                transaction.rollback();
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+            return null;
+        } finally {
+            if(this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+
+    public void setIdsSolicitud(List<String> idsSolicitud) {
+        this.idsSolicitud = idsSolicitud;
+    }
+
     public List<SelectItem> getSelectItemsOneArea() {
         this.session = null;
         this.transaction = null;
