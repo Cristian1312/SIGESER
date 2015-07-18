@@ -21,7 +21,6 @@ public class SolicitudDao implements ISolicitudDao{
     public List<Solicitud> getAll(Session session) throws Exception {
         List<Solicitud> solicitudes = session.createCriteria(Solicitud.class).list();
         for (Solicitud sol : solicitudes) {
-            Hibernate.initialize(sol.getId());
             Hibernate.initialize(sol.getUsuario());
             Hibernate.initialize(sol.getEstado());
             Hibernate.initialize(sol.getServicio());
@@ -40,6 +39,18 @@ public class SolicitudDao implements ISolicitudDao{
             Hibernate.initialize(sol.getServicio());
         }
         return solicitudes;
+    }
+    
+    @Override
+    public List<Solicitud> getSolicitudesAtendidas(Session session, Integer idUsuario) throws Exception {
+        List<Solicitud> solicitudesAtendidas = session.createQuery("from Solicitud where estado.idEstado = 5 "
+                + "and usuario.idUsuario = " + idUsuario).list();
+        for (Solicitud sol : solicitudesAtendidas) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+        }
+        return solicitudesAtendidas;
     }
     
     @Override

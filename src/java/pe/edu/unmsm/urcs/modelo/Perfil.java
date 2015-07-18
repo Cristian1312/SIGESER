@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,13 +13,13 @@ public class Perfil  implements java.io.Serializable {
 
      private Integer idPerfil;
      private String descripcion;
-     private Set usuarios = new HashSet(0);
-     private Set opcions = new HashSet(0);
+     private Set<Usuario> usuarios = new HashSet<Usuario>(0);
+     private Set<Opcion> opcions = new HashSet<Opcion>(0);
 
     public Perfil() {
     }
 
-    public Perfil(String descripcion, Set usuarios, Set opcions) {
+    public Perfil(String descripcion, Set<Usuario> usuarios, Set<Opcion> opcions) {
        this.descripcion = descripcion;
        this.usuarios = usuarios;
        this.opcions = opcions;
@@ -39,18 +39,18 @@ public class Perfil  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Set getUsuarios() {
+    public Set<Usuario> getUsuarios() {
         return this.usuarios;
     }
     
-    public void setUsuarios(Set usuarios) {
+    public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-    public Set getOpcions() {
+    public Set<Opcion> getOpcions() {
         return this.opcions;
     }
     
-    public void setOpcions(Set opcions) {
+    public void setOpcions(Set<Opcion> opcions) {
         this.opcions = opcions;
     }
 

@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,13 +13,13 @@ public class Area  implements java.io.Serializable {
 
      private Integer idArea;
      private String descripcion;
-     private Set operarios = new HashSet(0);
-     private Set servicios = new HashSet(0);
+     private Set<Operario> operarios = new HashSet<Operario>(0);
+     private Set<Servicio> servicios = new HashSet<Servicio>(0);
 
     public Area() {
     }
 
-    public Area(String descripcion, Set operarios, Set servicios) {
+    public Area(String descripcion, Set<Operario> operarios, Set<Servicio> servicios) {
        this.descripcion = descripcion;
        this.operarios = operarios;
        this.servicios = servicios;
@@ -39,18 +39,18 @@ public class Area  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Set getOperarios() {
+    public Set<Operario> getOperarios() {
         return this.operarios;
     }
     
-    public void setOperarios(Set operarios) {
+    public void setOperarios(Set<Operario> operarios) {
         this.operarios = operarios;
     }
-    public Set getServicios() {
+    public Set<Servicio> getServicios() {
         return this.servicios;
     }
     
-    public void setServicios(Set servicios) {
+    public void setServicios(Set<Servicio> servicios) {
         this.servicios = servicios;
     }
 

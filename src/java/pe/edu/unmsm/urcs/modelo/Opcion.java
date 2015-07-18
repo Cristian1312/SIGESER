@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,7 +9,7 @@ package pe.edu.unmsm.urcs.modelo;
 public class Opcion  implements java.io.Serializable {
 
 
-     private OpcionId id;
+     private Integer idOpcion;
      private Perfil perfil;
      private String descripcion;
 
@@ -17,22 +17,20 @@ public class Opcion  implements java.io.Serializable {
     }
 
 	
-    public Opcion(OpcionId id, Perfil perfil) {
-        this.id = id;
+    public Opcion(Perfil perfil) {
         this.perfil = perfil;
     }
-    public Opcion(OpcionId id, Perfil perfil, String descripcion) {
-       this.id = id;
+    public Opcion(Perfil perfil, String descripcion) {
        this.perfil = perfil;
        this.descripcion = descripcion;
     }
    
-    public OpcionId getId() {
-        return this.id;
+    public Integer getIdOpcion() {
+        return this.idOpcion;
     }
     
-    public void setId(OpcionId id) {
-        this.id = id;
+    public void setIdOpcion(Integer idOpcion) {
+        this.idOpcion = idOpcion;
     }
     public Perfil getPerfil() {
         return this.perfil;

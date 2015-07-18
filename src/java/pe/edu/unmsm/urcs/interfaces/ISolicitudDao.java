@@ -19,4 +19,5 @@ public interface ISolicitudDao {
     public void modificarSolicitud(Session session, Solicitud solicitud) throws Exception;
     public void eliminarSolicitud(Session session, Solicitud solicitud) throws Exception;
     public List<Solicitud> getsolicitudesPendientes(Session session, Integer idUsuario) throws Exception;
+    public List<Solicitud> getSolicitudesAtendidas(Session session, Integer idUsuario) throws Exception;
 }

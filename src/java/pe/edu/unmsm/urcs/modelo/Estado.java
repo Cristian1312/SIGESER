@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,12 +13,12 @@ public class Estado  implements java.io.Serializable {
 
      private Integer idEstado;
      private String descripcion;
-     private Set solicituds = new HashSet(0);
+     private Set<Solicitud> solicituds = new HashSet<Solicitud>(0);
 
     public Estado() {
     }
 
-    public Estado(String descripcion, Set solicituds) {
+    public Estado(String descripcion, Set<Solicitud> solicituds) {
        this.descripcion = descripcion;
        this.solicituds = solicituds;
     }
@@ -37,11 +37,11 @@ public class Estado  implements java.io.Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Set getSolicituds() {
+    public Set<Solicitud> getSolicituds() {
         return this.solicituds;
     }
     
-    public void setSolicituds(Set solicituds) {
+    public void setSolicituds(Set<Solicitud> solicituds) {
         this.solicituds = solicituds;
     }
 

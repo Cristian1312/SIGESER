@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
 public class Solicitud  implements java.io.Serializable {
 
 
-     private SolicitudId id;
+     private int idSolicitud;
      private Estado estado;
      private Operario operario;
      private Servicio servicio;
@@ -20,22 +20,23 @@ public class Solicitud  implements java.io.Serializable {
      private Date fechaPendienteReasig;
      private Date fechaFinalizado;
      private String motivoReasignacion;
-     private String solicitudcol;
+     private String anexo;
+     private String informe;
 
     public Solicitud() {
     }
 
 	
-    public Solicitud(SolicitudId id, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado) {
-        this.id = id;
+    public Solicitud(int idSolicitud, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado) {
+        this.idSolicitud = idSolicitud;
         this.estado = estado;
         this.operario = operario;
         this.servicio = servicio;
         this.usuario = usuario;
         this.fechaEnviado = fechaEnviado;
     }
-    public Solicitud(SolicitudId id, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado, Date fechaProceso, Date fechaPendienteReasig, Date fechaFinalizado, String motivoReasignacion, String solicitudcol) {
-       this.id = id;
+    public Solicitud(int idSolicitud, Estado estado, Operario operario, Servicio servicio, Usuario usuario, Date fechaEnviado, Date fechaProceso, Date fechaPendienteReasig, Date fechaFinalizado, String motivoReasignacion, String anexo, String informe) {
+       this.idSolicitud = idSolicitud;
        this.estado = estado;
        this.operario = operario;
        this.servicio = servicio;
@@ -45,15 +46,16 @@ public class Solicitud  implements java.io.Serializable {
        this.fechaPendienteReasig = fechaPendienteReasig;
        this.fechaFinalizado = fechaFinalizado;
        this.motivoReasignacion = motivoReasignacion;
-       this.solicitudcol = solicitudcol;
+       this.anexo = anexo;
+       this.informe = informe;
     }
    
-    public SolicitudId getId() {
-        return this.id;
+    public int getIdSolicitud() {
+        return this.idSolicitud;
     }
     
-    public void setId(SolicitudId id) {
-        this.id = id;
+    public void setIdSolicitud(int idSolicitud) {
+        this.idSolicitud = idSolicitud;
     }
     public Estado getEstado() {
         return this.estado;
@@ -118,12 +120,19 @@ public class Solicitud  implements java.io.Serializable {
     public void setMotivoReasignacion(String motivoReasignacion) {
         this.motivoReasignacion = motivoReasignacion;
     }
-    public String getSolicitudcol() {
-        return this.solicitudcol;
+    public String getAnexo() {
+        return this.anexo;
     }
     
-    public void setSolicitudcol(String solicitudcol) {
-        this.solicitudcol = solicitudcol;
+    public void setAnexo(String anexo) {
+        this.anexo = anexo;
+    }
+    public String getInforme() {
+        return this.informe;
+    }
+    
+    public void setInforme(String informe) {
+        this.informe = informe;
     }
 
 

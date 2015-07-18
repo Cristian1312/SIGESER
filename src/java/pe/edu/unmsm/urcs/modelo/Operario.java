@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class Operario  implements java.io.Serializable {
      private String telefono;
      private String anexo;
      private String correo;
-     private Set solicituds = new HashSet(0);
+     private Set<Solicitud> solicituds = new HashSet<Solicitud>(0);
 
     public Operario() {
     }
@@ -28,7 +28,7 @@ public class Operario  implements java.io.Serializable {
     public Operario(Area area) {
         this.area = area;
     }
-    public Operario(Area area, String nombre, String apPaterno, String apMaterno, String telefono, String anexo, String correo, Set solicituds) {
+    public Operario(Area area, String nombre, String apPaterno, String apMaterno, String telefono, String anexo, String correo, Set<Solicitud> solicituds) {
        this.area = area;
        this.nombre = nombre;
        this.apPaterno = apPaterno;
@@ -95,11 +95,11 @@ public class Operario  implements java.io.Serializable {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    public Set getSolicituds() {
+    public Set<Solicitud> getSolicituds() {
         return this.solicituds;
     }
     
-    public void setSolicituds(Set solicituds) {
+    public void setSolicituds(Set<Solicitud> solicituds) {
         this.solicituds = solicituds;
     }
 

@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <p:outputLabel for="servicio" value="Servicio" class="control-label col-sm-4" />
                         <div class="col-sm-4">
-                            <h:selectOneMenu id="servicio" value="#{registrarServicioBean.solicitudId.servicioIdServicio}" class="form-control"
+                            <h:selectOneMenu id="servicio" value="#{registrarServicioBean.idServicio}" class="form-control"
                                              required="true">
                                 <f:selectItem itemLabel="Seleccione servicio" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{registrarServicioBean.selectItemsOneServicio}" />
@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <p:outputLabel for="nroAnexo" value="Número de anexo" class="control-label col-sm-4" />
                         <div class="col-sm-4">
-                            <p:inputText id="nroAnexo" value="#{registrarServicioBean.solicitud.solicitudcol}" required="true"
+                            <p:inputText id="nroAnexo" value="#{registrarServicioBean.solicitud.anexo}" required="true"
                                         placeholder="Numero de anexo" class="form-control" />
                         </div>
                     </div>

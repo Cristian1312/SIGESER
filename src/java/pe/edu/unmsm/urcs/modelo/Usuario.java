@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class Usuario  implements java.io.Serializable {
      private String apellido;
      private String anexo;
      private int oficinaIdOficina;
-     private Set solicituds = new HashSet(0);
+     private Set<Solicitud> solicituds = new HashSet<Solicitud>(0);
 
     public Usuario() {
     }
@@ -29,7 +29,7 @@ public class Usuario  implements java.io.Serializable {
         this.perfil = perfil;
         this.oficinaIdOficina = oficinaIdOficina;
     }
-    public Usuario(Perfil perfil, String email, String pass, String nombre, String apellido, String anexo, int oficinaIdOficina, Set solicituds) {
+    public Usuario(Perfil perfil, String email, String pass, String nombre, String apellido, String anexo, int oficinaIdOficina, Set<Solicitud> solicituds) {
        this.perfil = perfil;
        this.email = email;
        this.pass = pass;
@@ -96,11 +96,11 @@ public class Usuario  implements java.io.Serializable {
     public void setOficinaIdOficina(int oficinaIdOficina) {
         this.oficinaIdOficina = oficinaIdOficina;
     }
-    public Set getSolicituds() {
+    public Set<Solicitud> getSolicituds() {
         return this.solicituds;
     }
     
-    public void setSolicituds(Set solicituds) {
+    public void setSolicituds(Set<Solicitud> solicituds) {
         this.solicituds = solicituds;
     }
 

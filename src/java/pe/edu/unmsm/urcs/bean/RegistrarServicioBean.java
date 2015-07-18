@@ -23,9 +23,9 @@ import pe.edu.unmsm.urcs.interfaces.IEstadoDao;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Area;
 import pe.edu.unmsm.urcs.modelo.Estado;
+import pe.edu.unmsm.urcs.modelo.Operario;
 import pe.edu.unmsm.urcs.modelo.Servicio;
 import pe.edu.unmsm.urcs.modelo.Solicitud;
-import pe.edu.unmsm.urcs.modelo.SolicitudId;
 import pe.edu.unmsm.urcs.modelo.Usuario;
 import pe.edu.unmsm.urcs.persistencia.NewHibernateUtil;
 
@@ -42,6 +42,7 @@ public class RegistrarServicioBean {
     Usuario usuario;
     
     private String idArea;
+    private String idServicio;
     private String idEstado;
     private String idSolicitud;
     private List<SelectItem> selectItemsOneArea;
@@ -50,12 +51,10 @@ public class RegistrarServicioBean {
     private List<String> idsSolicitud;
     private List<Solicitud> solicitudes;
     private Solicitud solicitud;
-    private SolicitudId solicitudId;
     
     public RegistrarServicioBean() {
         this.usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext()
                 .getSessionMap().get("usuario");
-        this.solicitudId = new SolicitudId();
         this.solicitud = new Solicitud();
     }
 
@@ -65,6 +64,14 @@ public class RegistrarServicioBean {
 
     public void setIdArea(String idArea) {
         this.idArea = idArea;
+    }
+
+    public String getIdServicio() {
+        return idServicio;
+    }
+
+    public void setIdServicio(String idServicio) {
+        this.idServicio = idServicio;
     }
 
     public String getIdEstado() {
@@ -89,14 +96,6 @@ public class RegistrarServicioBean {
 
     public void setSolicitud(Solicitud solicitud) {
         this.solicitud = solicitud;
-    }
-
-    public SolicitudId getSolicitudId() {
-        return solicitudId;
-    }
-
-    public void setSolicitudId(SolicitudId solicitudId) {
-        this.solicitudId = solicitudId;
     }
     
     public List<Solicitud> getSolicitudesPendientes() {
@@ -199,10 +198,9 @@ public class RegistrarServicioBean {
             this.transaction = this.session.beginTransaction();
             List<Solicitud> solicitudesTemp = solicitudDao.getAll(this.session);
             for (Solicitud solicitud : solicitudesTemp) {
-                this.idsSolicitud.add(String.valueOf(solicitud.getId().getIdSolicitud()));
+                this.idsSolicitud.add(String.valueOf(solicitud.getIdSolicitud()));
             }
             this.transaction.commit();
-            System.out.println("Size: " + this.idsSolicitud.size());
             return this.idsSolicitud;
         } catch (Exception ex) {
             if(this.transaction != null) {
@@ -301,17 +299,22 @@ public class RegistrarServicioBean {
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
-            solicitudId.setUsuarioIdUsuario(usuario.getIdUsuario());
-            this.solicitudId.setEstadoIdEstado(1);
-            this.solicitudId.setOperarioIdOperario(1);
-            this.solicitud.setId(this.solicitudId);
+            this.solicitud.setUsuario(usuario);
+            Servicio servicio = new Servicio();
+            servicio.setIdServicio(Integer.parseInt(this.idServicio));
+            this.solicitud.setServicio(servicio);
+            Estado estado = new Estado();
+            estado.setIdEstado(1);
+            this.solicitud.setEstado(estado);
+            Operario operario = new Operario();
+            operario.setIdOperario(1);
+            this.solicitud.setOperario(operario);
             this.transaction = this.session.beginTransaction();
             solicitudDao.insertarSolicitud(this.session, this.solicitud);
             this.transaction.commit();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Correcto", "Servicio registrado correctamente"));
             RequestContext.getCurrentInstance().update("servicioForm:mensajeGeneral");
-            this.solicitudId = new SolicitudId();
             this.solicitud = new Solicitud();
         }
         catch(Exception ex) {
@@ -338,7 +341,6 @@ public class RegistrarServicioBean {
             this.transaction = this.session.beginTransaction();
             solicitudDao.modificarSolicitud(this.session, this.solicitud);
             this.transaction.commit();
-            this.solicitudId = new SolicitudId();
             this.solicitud = new Solicitud();
         }
         catch(Exception ex) {
@@ -365,7 +367,6 @@ public class RegistrarServicioBean {
             this.transaction = this.session.beginTransaction();
             solicitudDao.eliminarSolicitud(this.session, this.solicitud);
             this.transaction.commit();
-            this.solicitudId = new SolicitudId();
             this.solicitud = new Solicitud();
         }
         catch(Exception ex) {

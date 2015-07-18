@@ -9,16 +9,15 @@
     <property name="hibernate.connection.password">13572468</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/FacultadDependencia.hbm.xml"/>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/Perfil.hbm.xml"/>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/Area.hbm.xml"/>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/Estado.hbm.xml"/>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/Usuario.hbm.xml"/>
+    <mapping resource="pe/edu/unmsm/urcs/modelo/Oficina.hbm.xml"/>
     <mapping resource="pe/edu/unmsm/urcs/modelo/Servicio.hbm.xml"/>
     <mapping resource="pe/edu/unmsm/urcs/modelo/Opcion.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Area.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Informe.hbm.xml"/>
     <mapping resource="pe/edu/unmsm/urcs/modelo/Operario.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/FacultadDependencia.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Usuario.hbm.xml"/>
     <mapping resource="pe/edu/unmsm/urcs/modelo/Solicitud.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Estado.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Oficina.hbm.xml"/>
-    <mapping resource="pe/edu/unmsm/urcs/modelo/Perfil.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

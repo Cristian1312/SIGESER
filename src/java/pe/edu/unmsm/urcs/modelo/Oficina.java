@@ -1,5 +1,5 @@
 package pe.edu.unmsm.urcs.modelo;
-// Generated 05/07/2015 12:56:44 AM by Hibernate Tools 4.3.1
+// Generated 11/07/2015 09:19:57 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,7 +9,7 @@ package pe.edu.unmsm.urcs.modelo;
 public class Oficina  implements java.io.Serializable {
 
 
-     private OficinaId id;
+     private Integer idOficina;
      private FacultadDependencia facultadDependencia;
      private String descripcion;
 
@@ -17,22 +17,20 @@ public class Oficina  implements java.io.Serializable {
     }
 
 	
-    public Oficina(OficinaId id, FacultadDependencia facultadDependencia) {
-        this.id = id;
+    public Oficina(FacultadDependencia facultadDependencia) {
         this.facultadDependencia = facultadDependencia;
     }
-    public Oficina(OficinaId id, FacultadDependencia facultadDependencia, String descripcion) {
-       this.id = id;
+    public Oficina(FacultadDependencia facultadDependencia, String descripcion) {
        this.facultadDependencia = facultadDependencia;
        this.descripcion = descripcion;
     }
    
-    public OficinaId getId() {
-        return this.id;
+    public Integer getIdOficina() {
+        return this.idOficina;
     }
     
-    public void setId(OficinaId id) {
-        this.id = id;
+    public void setIdOficina(Integer idOficina) {
+        this.idOficina = idOficina;
     }
     public FacultadDependencia getFacultadDependencia() {
         return this.facultadDependencia;
