@@ -14,12 +14,22 @@ import pe.edu.unmsm.urcs.modelo.Solicitud;
  * @author Cristian1312
  */
 public interface ISolicitudDao {
+
     public List<Solicitud> getAll(Session session) throws Exception;
+
     public void insertarSolicitud(Session session, Solicitud solicitud) throws Exception;
+
     public void modificarSolicitud(Session session, Solicitud solicitud) throws Exception;
+
     public void eliminarSolicitud(Session session, Solicitud solicitud) throws Exception;
+
     public List<Solicitud> getSolicitudesPendientesReasignacion(Session session) throws Exception;
+
     public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception;
+
     public List<Solicitud> getSolicitudesAtendidas(Session session, String correo) throws Exception;
+
     public List<Solicitud> getSolicitudAtendidaById(Session session, String correo, int id) throws Exception;
+
+    public List<Solicitud> getSolicitudesCurso(Session session, String email) throws Exception;
 }
