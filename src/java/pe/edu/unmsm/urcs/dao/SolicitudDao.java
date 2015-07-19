@@ -30,6 +30,20 @@ public class SolicitudDao implements ISolicitudDao {
     }
 
     @Override
+    
+    public List<Solicitud> getSolicitudesFinalizadas(Session session) throws Exception {
+        List<Solicitud> solicitudesFinalizadas = session.createQuery("from Solicitud where estado.idEstado = 5").
+                list();
+        for (Solicitud sol : solicitudesFinalizadas) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+        }
+        return solicitudesFinalizadas;
+    }
+    
+    @Override
+    
     public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception {
         List<Solicitud> solicitudesPendientes = session.createQuery("from Solicitud where estado.idEstado = 1 "
                 + "and operario.correo = '" + correo + "'").list();
@@ -66,6 +80,19 @@ public class SolicitudDao implements ISolicitudDao {
             Hibernate.initialize(sol.getServicio());
         }
         return solicitudAtendida;
+    }
+    
+    @Override
+    public List<Solicitud> getSolicitudFinalizadaById(Session session, int id) throws Exception {
+        List<Solicitud> solicitudFinalizada = session.createQuery("from Solicitud where estado.idEstado = 5 "
+                + "and idSolicitud = " + id).list();
+        for (Solicitud sol : solicitudFinalizada) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+        }
+        return solicitudFinalizada;
     }
 
     @Override

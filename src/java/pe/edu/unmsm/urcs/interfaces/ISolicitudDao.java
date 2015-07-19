@@ -32,4 +32,8 @@ public interface ISolicitudDao {
     public List<Solicitud> getSolicitudAtendidaById(Session session, String correo, int id) throws Exception;
 
     public List<Solicitud> getSolicitudesCurso(Session session, String email) throws Exception;
+    
+    public List<Solicitud> getSolicitudesFinalizadas(Session session) throws Exception;
+    
+    public List<Solicitud> getSolicitudFinalizadaById(Session session, int id) throws Exception;
 }

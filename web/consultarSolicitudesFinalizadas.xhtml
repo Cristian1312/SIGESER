@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Bienvenidos a SIGESER!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    </h:head>
+    <h:body>
+        <section class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>Informes Finalizados</b></h3>
+                </div>
+                <div class="panel-body">
+                    <h:form id="formMostrar">
+                        <p:dataTable var="sol" value="#{solicitudesFinalizadasBean.solicitudesFinalizadas}"
+                                     emptyMessage="No hay informes de servicios atendidos que cumplas con los filtros seleccionados"
+                                     paginator="true" rows="10" paginatorPosition="top" widgetVar="tablaSolicitudesFinalizadas"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10"
+                                     style="width: 90%;margin: auto;">
+                            <p:column filterBy="#{sol.idSolicitud}" headerText="Id Solicitud" filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('tablaSolicitudesFinalizadas').filter()" style="width: 80px;">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{solicitudesFinalizadasBean.idsSolicitud}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{sol.idSolicitud}" />
+                            </p:column>
+                            <p:column headerText="Fecha de término">
+                                <h:outputText value="#{sol.fechaFinalizado}" >
+                                    <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Anexo">
+                                <h:outputText value="#{sol.anexo}" />
+                            </p:column>
+                            <p:column headerText="Solicitante">
+                                <h:outputText value="#{sol.usuario.nombre} #{sol.usuario.apellido}" />
+                            </p:column>
+                            <p:column headerText="Servicio">
+                                <h:outputText value="#{sol.servicio.descripcion}" />
+                            </p:column>
+                            <p:column filterBy="#{sol.servicio.descripcion}" headerText="Servicio" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Servicios" onchange="PF('tablaSolicitudesFinalizadas').filter()"
+                                                          panelStyle="width:240px" scrollHeight="150">
+                                        <f:selectItems value="#{solicitudesFinalizadasBean.servicios}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{sol.servicio.descripcion}" />
+                            </p:column>
+                            <p:column headerText="Ver Detalles">
+                                <p:commandButton value="Ver" actionListener="#{solicitudesFinalizadasBean.exportarInformePDF(actionEvent, sol.idSolicitud)}"
+                                        ajax="false" class="btn btn-primary" icon="ui-icon-document" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </section>
+    </h:body>
+</html>
