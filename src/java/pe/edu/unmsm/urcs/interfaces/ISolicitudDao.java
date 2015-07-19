@@ -36,4 +36,6 @@ public interface ISolicitudDao {
     public List<Solicitud> getSolicitudesFinalizadas(Session session) throws Exception;
     
     public List<Solicitud> getSolicitudFinalizadaById(Session session, int id) throws Exception;
+    
+    public List<Solicitud> getsolicitudesTerminadas(Session session) throws Exception;
 }
