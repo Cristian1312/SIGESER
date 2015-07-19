@@ -18,6 +18,8 @@ public interface ISolicitudDao {
     public void insertarSolicitud(Session session, Solicitud solicitud) throws Exception;
     public void modificarSolicitud(Session session, Solicitud solicitud) throws Exception;
     public void eliminarSolicitud(Session session, Solicitud solicitud) throws Exception;
-    public List<Solicitud> getsolicitudesPendientes(Session session, Integer idUsuario) throws Exception;
-    public List<Solicitud> getSolicitudesAtendidas(Session session, Integer idUsuario) throws Exception;
+    public List<Solicitud> getSolicitudesPendientesReasignacion(Session session) throws Exception;
+    public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception;
+    public List<Solicitud> getSolicitudesAtendidas(Session session, String correo) throws Exception;
+    public List<Solicitud> getSolicitudAtendidaById(Session session, String correo, int id) throws Exception;
 }

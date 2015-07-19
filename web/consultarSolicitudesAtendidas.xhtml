@@ -10,50 +10,51 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
     </h:head>
-    <body>
-    <section class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><b>Solicitudes de servicio atendidas</b></h3>
+    <h:body>
+        <section class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><b>Solicitudes de servicio atendidas</b></h3>
+                </div>
+                <div class="panel-body">
+                    <h:form id="formMostrar">
+                        <p:dataTable var="sol" value="#{solicitudesAtendidasBean.solicitudesAtendidas}"
+                                     emptyMessage="No hay informes que cumplas con los filtros seleccionados"
+                                     paginator="true" rows="10" paginatorPosition="top" widgetVar="tablaSolicitudesAtendidas"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10"
+                                     style="width: 90%;margin: auto;">
+                            <p:column filterBy="#{sol.idSolicitud}" headerText="Id Solicitud" filterMatchMode="exact">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('tablaSolicitudesAtendidas').filter()" style="width: 80px;">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{solicitudesAtendidasBean.idsSolicitud}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{sol.idSolicitud}" />
+                            </p:column>
+                            <p:column headerText="Fecha de término">
+                                <h:outputText value="#{sol.fechaFinalizado}" >
+                                    <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Anexo">
+                                <h:outputText value="#{sol.anexo}" />
+                            </p:column>
+                            <p:column headerText="Solicitante">
+                                <h:outputText value="#{sol.usuario.nombre} #{sol.usuario.apellido}" />
+                            </p:column>
+                            <p:column headerText="Servicio">
+                                <h:outputText value="#{sol.servicio.descripcion}" />
+                            </p:column>
+                            <p:column headerText="Ver Detalles">
+                                <p:commandButton value="Ver" actionListener="#{solicitudesAtendidasBean.exportarInformePDF(actionEvent, sol.idSolicitud)}"
+                                        ajax="false" class="btn btn-primary" icon="ui-icon-document" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
             </div>
-            <div class="panel-body">
-                <h:form id="formMostrar">
-                    <p:dataTable var="sol" value="#{solicitudesAtendidasBean.solicitudesAtendidas}"
-                                 emptyMessage="No hay informes que cumplas con los filtros seleccionados"
-                                 paginator="true" rows="10" paginatorPosition="top"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
-                                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10"
-                                 style="width: 90%;margin: auto;">
-                        <p:column headerText="Id Solicitud">
-                            <h:outputText value="#{sol.id.idSolicitud}" />
-                        </p:column>
-                        <p:column headerText="Fecha de envío">
-                            <h:outputText value="#{sol.fechaEnviado}" >
-                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                            </h:outputText>
-                        </p:column>
-                        <p:column headerText="Anexo">
-                            <h:outputText value="#{sol.solicitudcol}" />
-                        </p:column>
-                        <p:column headerText="Usuario">
-                            <h:outputText value="#{sol.usuario.nombre} #{sol.usuario.apellido}" />
-                        </p:column>
-                        <p:column headerText="Estado">
-                            <h:outputText value="#{sol.estado.descripcion}" />
-                        </p:column>
-                        <p:column headerText="Servicio">
-                            <h:outputText value="#{sol.servicio.descripcion}" />
-                        </p:column>
-                        <p:column headerText="Ver Detalles">
-                            <p:commandButton value="Ver" oncomplete="" >
-                                <f:setPropertyActionListener target="" value="" />                        
-                            </p:commandButton>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-            </div>
-        </div>
-    </section>
-</body>
-
+        </section>
+    </h:body>
 </html>

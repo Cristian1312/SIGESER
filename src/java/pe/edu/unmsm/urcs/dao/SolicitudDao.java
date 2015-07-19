@@ -30,27 +30,55 @@ public class SolicitudDao implements ISolicitudDao{
     }
     
     @Override
-    public List<Solicitud> getsolicitudesPendientes(Session session, Integer idUsuario) throws Exception{
-        List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado.idEstado = 1 "
-                + "and usuario.idUsuario = " + idUsuario).list();
-        for (Solicitud sol : solicitudes) {
+    public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception{
+        List<Solicitud> solicitudesPendientes = session.createQuery("from Solicitud where estado.idEstado = 1 "
+                + "and operario.correo = '" + correo + "'").list();
+        for (Solicitud sol : solicitudesPendientes) {
             Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
             Hibernate.initialize(sol.getEstado());
             Hibernate.initialize(sol.getServicio());
         }
-        return solicitudes;
+        return solicitudesPendientes;
     }
     
     @Override
-    public List<Solicitud> getSolicitudesAtendidas(Session session, Integer idUsuario) throws Exception {
+    public List<Solicitud> getSolicitudesAtendidas(Session session, String correo) throws Exception {
         List<Solicitud> solicitudesAtendidas = session.createQuery("from Solicitud where estado.idEstado = 5 "
-                + "and usuario.idUsuario = " + idUsuario).list();
+                + "and operario.correo = '" + correo + "'").list();
         for (Solicitud sol : solicitudesAtendidas) {
             Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
             Hibernate.initialize(sol.getEstado());
             Hibernate.initialize(sol.getServicio());
         }
         return solicitudesAtendidas;
+    }
+    
+    @Override
+    public List<Solicitud> getSolicitudAtendidaById(Session session, String correo, int id) throws Exception {
+        List<Solicitud> solicitudAtendida = session.createQuery("from Solicitud where estado.idEstado = 5 "
+                + "and operario.correo = '" + correo + "' and idSolicitud = " + id).list();
+        for (Solicitud sol : solicitudAtendida) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+        }
+        return solicitudAtendida;
+    }
+    
+    @Override
+    public List<Solicitud> getSolicitudesPendientesReasignacion(Session session) throws Exception {
+        List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado.idEstado = 3 ").list();
+        for (Solicitud sol : solicitudes) {
+            Hibernate.initialize(sol.getIdSolicitud());
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+            Hibernate.initialize(sol.getOperario());
+        }
+        return solicitudes;
     }
     
     @Override

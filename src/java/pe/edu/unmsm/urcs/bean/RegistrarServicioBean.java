@@ -98,32 +98,6 @@ public class RegistrarServicioBean {
         this.solicitud = solicitud;
     }
     
-    public List<Solicitud> getSolicitudesPendientes() {
-        this.session = null;
-        this.transaction = null;
-        
-        try {
-            this.session = NewHibernateUtil.getSessionFactory().openSession();
-            ISolicitudDao solicitudDao = new SolicitudDao();
-            this.transaction = this.session.beginTransaction();
-            this.solicitudes = solicitudDao.getsolicitudesPendientes(this.session,
-                    this.usuario.getIdUsuario());
-            this.transaction.commit();
-            return this.solicitudes;
-        } catch (Exception ex) {
-            if(this.transaction != null) {
-                transaction.rollback();
-            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
-            return null;
-        } finally {
-            if(this.session != null) {
-                this.session.close();
-            }
-        }
-    }
-    
     public List<Solicitud> getSolicitudes() {
         this.session = null;
         this.transaction = null;

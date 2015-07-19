@@ -24,11 +24,6 @@ public class NewHibernateUtil {
             // config file.
             sessionFactory = new AnnotationConfiguration().
                     configure("/pe/edu/unmsm/urcs/persistencia/hibernate.cfg.xml").buildSessionFactory();
-            /*Configuration configuration = new Configuration().configure(
-                    "/pe/edu/unmsm/urcs/persistencia/hibernate.cfg.xml");
-            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-                    applySettings(configuration.getProperties());
-            sessionFactory = configuration.buildSessionFactory(builder.build());*/
         } catch (Throwable ex) {
             // Log the exception. 
             System.err.println("Initial SessionFactory creation failed." + ex);
