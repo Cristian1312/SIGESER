@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19/07/2015, 02:12:05 PM
+    Author     : SILVIA
+*/
+
+body, html {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-color: #560211;
+    /*background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+    background-image: linear-gradient(#40010d, #730217);
+}
+
+.container{
+    background-color: #570212;
+}
