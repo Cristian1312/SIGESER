@@ -5,6 +5,7 @@
  */
 package pe.edu.unmsm.urcs.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -17,9 +18,11 @@ import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import pe.edu.unmsm.urcs.dao.AreaServicioDao;
 import pe.edu.unmsm.urcs.dao.EstadoDao;
+import pe.edu.unmsm.urcs.dao.OperarioDao;
 import pe.edu.unmsm.urcs.dao.SolicitudDao;
 import pe.edu.unmsm.urcs.interfaces.IAreaServicioDao;
 import pe.edu.unmsm.urcs.interfaces.IEstadoDao;
+import pe.edu.unmsm.urcs.interfaces.IOperarioDao;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Area;
 import pe.edu.unmsm.urcs.modelo.Estado;
@@ -35,7 +38,7 @@ import pe.edu.unmsm.urcs.persistencia.NewHibernateUtil;
  */
 @ManagedBean
 @SessionScoped
-public class RegistrarServicioBean {
+public class RegistrarServicioBean implements Serializable {
 
     Session session;
     Transaction transaction;
@@ -273,6 +276,7 @@ public class RegistrarServicioBean {
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
+            IOperarioDao operarioDao = new OperarioDao();
             this.solicitud.setUsuario(usuario);
             Servicio servicio = new Servicio();
             servicio.setIdServicio(Integer.parseInt(this.idServicio));
@@ -281,7 +285,8 @@ public class RegistrarServicioBean {
             estado.setIdEstado(1);
             this.solicitud.setEstado(estado);
             Operario operario = new Operario();
-            operario.setIdOperario(1);
+            operario.setIdOperario(operarioDao.getIdOperarioMenorCargaTrabajo(
+                    this.session, Integer.parseInt(this.idArea)));
             this.solicitud.setOperario(operario);
             this.transaction = this.session.beginTransaction();
             solicitudDao.insertarSolicitud(this.session, this.solicitud);

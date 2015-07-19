@@ -19,4 +19,5 @@ public interface IOperarioDao {
     public Operario verificarOperario(Session session, Operario operario)throws Exception;
     public void modificarOperario(Session session, Operario operario) throws Exception;
     public void eliminarOperario(Session session, Operario operario) throws Exception;
+    public int getIdOperarioMenorCargaTrabajo(Session session, int idArea);
 }

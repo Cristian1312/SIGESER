@@ -40,7 +40,6 @@ public class OperarioDao implements IOperarioDao {
             Hibernate.initialize(ope.getTelefono());
             Hibernate.initialize(ope.getCorreo());
             Hibernate.initialize(ope.getArea().getDescripcion());
-
         }
 
         return session.createCriteria(Operario.class).list();
@@ -55,5 +54,19 @@ public class OperarioDao implements IOperarioDao {
             oper = (Operario) query.uniqueResult();
         }
         return oper;
+    }
+
+    @Override
+    public int getIdOperarioMenorCargaTrabajo(Session session, int idArea) {
+        int idOperario = 0;
+        Query query = session.createSQLQuery("select X.idOperario from (select "
+                + "idOperario, count(*) from Solicitud A inner Join Operario B "
+                + "on A.Operario_idOperario = B.idOperario where "
+                + "B.Area_idArea = " + idArea + " group by B.idOperario "
+                + "order by count(*) asc) as X LIMIT 1");
+        if (!query.list().isEmpty()) {
+            idOperario = (int) query.uniqueResult();
+        }
+        return idOperario;
     }
 }
