@@ -15,7 +15,7 @@ import pe.edu.unmsm.urcs.modelo.Solicitud;
  *
  * @author Cristian1312
  */
-public class SolicitudDao implements ISolicitudDao{      
+public class SolicitudDao implements ISolicitudDao {
 
     @Override
     public List<Solicitud> getAll(Session session) throws Exception {
@@ -25,12 +25,12 @@ public class SolicitudDao implements ISolicitudDao{
             Hibernate.initialize(sol.getEstado());
             Hibernate.initialize(sol.getServicio());
         }
-        
+
         return solicitudes;
     }
-    
+
     @Override
-    public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception{
+    public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception {
         List<Solicitud> solicitudesPendientes = session.createQuery("from Solicitud where estado.idEstado = 1 "
                 + "and operario.correo = '" + correo + "'").list();
         for (Solicitud sol : solicitudesPendientes) {
@@ -41,7 +41,7 @@ public class SolicitudDao implements ISolicitudDao{
         }
         return solicitudesPendientes;
     }
-    
+
     @Override
     public List<Solicitud> getSolicitudesAtendidas(Session session, String correo) throws Exception {
         List<Solicitud> solicitudesAtendidas = session.createQuery("from Solicitud where estado.idEstado = 5 "
@@ -54,7 +54,7 @@ public class SolicitudDao implements ISolicitudDao{
         }
         return solicitudesAtendidas;
     }
-    
+
     @Override
     public List<Solicitud> getSolicitudAtendidaById(Session session, String correo, int id) throws Exception {
         List<Solicitud> solicitudAtendida = session.createQuery("from Solicitud where estado.idEstado = 5 "
@@ -67,7 +67,7 @@ public class SolicitudDao implements ISolicitudDao{
         }
         return solicitudAtendida;
     }
-    
+
     @Override
     public List<Solicitud> getSolicitudesPendientesReasignacion(Session session) throws Exception {
         List<Solicitud> solicitudes = session.createQuery("from Solicitud where estado.idEstado = 3 ").list();
@@ -80,11 +80,24 @@ public class SolicitudDao implements ISolicitudDao{
         }
         return solicitudes;
     }
-    
+
+    @Override
+    public List<Solicitud> getSolicitudesCurso(Session session, String email) throws Exception {
+        List<Solicitud> solicitudesCurso = session.createQuery("from Solicitud where estado.idEstado = 2 "
+                + "and operario.correo = '" + email + "'").list();
+        for (Solicitud sol : solicitudesCurso) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio());
+        }
+        return solicitudesCurso;
+    }
+
     @Override
     public void insertarSolicitud(Session session, Solicitud solicitud) throws Exception {
         session.save(solicitud);
-    }  
+    }
 
     @Override
     public void modificarSolicitud(Session session, Solicitud solicitud) throws Exception {
