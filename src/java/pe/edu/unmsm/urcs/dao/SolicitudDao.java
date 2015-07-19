@@ -41,6 +41,20 @@ public class SolicitudDao implements ISolicitudDao {
         }
         return solicitudesFinalizadas;
     }
+    @Override
+    
+    public List<Solicitud> getsolicitudesTerminadas(Session session) throws Exception {
+        List<Solicitud> solicitudesTerminadas = session.createQuery("from Solicitud where estado.idEstado = 5 "
+                ).list();
+        for (Solicitud sol : solicitudesTerminadas) {
+            Hibernate.initialize(sol.getUsuario());
+            Hibernate.initialize(sol.getOperario());
+            Hibernate.initialize(sol.getEstado());
+            Hibernate.initialize(sol.getServicio().getArea());
+            
+        }
+        return solicitudesTerminadas;
+    }
     
     @Override
     
