@@ -313,6 +313,9 @@ public class RegistrarServicioBean {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             ISolicitudDao solicitudDao = new SolicitudDao();
             this.transaction = this.session.beginTransaction();
+            Servicio servicio = new Servicio();
+            servicio.setIdServicio(Integer.parseInt(this.idServicio));
+            this.solicitud.setServicio(servicio);
             solicitudDao.modificarSolicitud(this.session, this.solicitud);
             this.transaction.commit();
             this.solicitud = new Solicitud();

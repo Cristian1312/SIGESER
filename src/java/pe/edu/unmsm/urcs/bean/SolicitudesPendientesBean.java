@@ -46,13 +46,11 @@ public class SolicitudesPendientesBean implements Serializable {
     }
 
     public void pedirReasignacionSolicitud() {
-        if (solicitud.getFechaPendienteReasig() == null) {
-            Date fechapendreasig = new Date();
-            this.solicitud.setFechaPendienteReasig(fechapendreasig);
-            Estado estadoReasig = new Estado();
-            estadoReasig.setIdEstado(3);
-            this.solicitud.setEstado(estadoReasig);
-        }
+        Date fechapendreasig = new Date();
+        this.solicitud.setFechaPendienteReasig(fechapendreasig);
+        Estado estadoReasig = new Estado();
+        estadoReasig.setIdEstado(3);
+        this.solicitud.setEstado(estadoReasig);
         this.modificarServicio();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Exito", "Solicitud reasignada correctamente"));
@@ -60,13 +58,11 @@ public class SolicitudesPendientesBean implements Serializable {
     }
     
     public void atenderSolicitud() {
-        if (solicitud.getFechaPendienteReasig() == null) {
-            Date fechaProceso = new Date();
-            this.solicitud.setFechaProceso(fechaProceso);
-            Estado estadoEnProceso = new Estado();
-            estadoEnProceso.setIdEstado(2);
-            this.solicitud.setEstado(estadoEnProceso);
-        }
+        Date fechaProceso = new Date();
+        this.solicitud.setFechaProceso(fechaProceso);
+        Estado estadoEnProceso = new Estado();
+        estadoEnProceso.setIdEstado(2);
+        this.solicitud.setEstado(estadoEnProceso);
         this.modificarServicio();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Exito", "Solicitud atendida correctamente"));
