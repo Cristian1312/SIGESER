@@ -41,17 +41,20 @@ public class OperarioBean implements Serializable {
 
     private Usuario usuario;
     private Operario operario;
-    private String correo;
     private Area area;
     private String idArea;
     private List<SelectItem> selectItemsOneArea;
     private List<Operario> operarios;
+    private final HttpServletRequest httpServletRequest;
+    private final FacesContext facesContext;
     private Perfil perfil;
     private FacesMessage facesMessage;
 
     public OperarioBean() {
         this.operario = new Operario();
         this.area = new Area();
+        facesContext = FacesContext.getCurrentInstance();
+        httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         this.perfil = new Perfil();
         this.usuario = new Usuario();
     }
@@ -120,14 +123,6 @@ public class OperarioBean implements Serializable {
         this.operarios = operarios;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
     public Perfil getPerfil() {
         return perfil;
     }
@@ -148,33 +143,35 @@ public class OperarioBean implements Serializable {
         this.session = null;
         this.transaction = null;
         try {
-            
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             UsuarioDao usuarioDao = new UsuarioDao();
             IOperarioDao operarioDao = new OperarioDao();
             this.transaction = this.session.beginTransaction();
             this.usuario = usuarioDao.verificarCorreo(this.session, this.usuario);
-            if (this.usuario != null && correoexiste(this.usuario.getEmail())==false) {
-                this.area.setIdArea(Integer.parseInt(idArea));
-                this.perfil.setIdPerfil(3);
-                this.usuario.setPerfil(this.perfil);
-                this.operario.setArea(this.area);
-                this.operario.setCorreo(this.usuario.getEmail());
-                operarioDao.insertarOperario(this.session, this.operario);
-                this.transaction.commit();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                        FacesMessage.SEVERITY_INFO, "Correcto", "Operario registrado correctamente"));
-                RequestContext.getCurrentInstance().update("operarioForm:mensajeGeneral");
-
+            if (this.usuario != null) {
+                if (correoexiste(this.usuario.getEmail()) == false) {
+                    this.area.setIdArea(Integer.parseInt(idArea));
+                    this.perfil.setIdPerfil(3);
+                    this.usuario.setPerfil(this.perfil);
+                    this.operario.setArea(this.area);
+                    this.operario.setCorreo(this.usuario.getEmail());
+                    operarioDao.insertarOperario(this.session, this.operario);
+                    this.transaction.commit();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                            FacesMessage.SEVERITY_INFO, "Correcto", "Operario registrado correctamente"));
+                    RequestContext.getCurrentInstance().update("operarioForm:mensajeGeneral");
+                    this.operario = new Operario();
+                    this.usuario = new Usuario();
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo ya existe"));
+                    this.operario = new Operario();
+                    this.usuario = new Usuario();
+                }
             } else {
-                if(correoexiste(this.usuario.getEmail())){
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo ya existe"));   
-                }
-                else{
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo Inválido"));
-                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en el Registro", "Correo Inválido"));
+                this.operario = new Operario();
+                this.usuario = new Usuario();
             }
-
         } catch (Exception ex) {
             if (this.transaction != null) {
                 transaction.rollback();
@@ -228,8 +225,8 @@ public class OperarioBean implements Serializable {
             this.area.setIdArea(Integer.parseInt(idArea));
             this.operario.setArea(this.area);
             operarioDao.modificarOperario(this.session, this.operario);
-            this.operario = new Operario();
             this.transaction.commit();
+            this.operario = new Operario();
         } catch (Exception ex) {
             if (this.transaction != null) {
                 transaction.rollback();
@@ -250,13 +247,19 @@ public class OperarioBean implements Serializable {
         try {
             this.session = NewHibernateUtil.getSessionFactory().openSession();
             IOperarioDao operarioDao = new OperarioDao();
-
-            this.transaction = this.session.beginTransaction();
-            this.perfil.setIdPerfil(1);
-            this.usuario.setPerfil(this.perfil);
-            operarioDao.eliminarOperario(this.session, this.operario);
             UsuarioDao usuarioDao = new UsuarioDao();
-            usuarioDao.modificarUsuario(this.session, this.usuario);
+            this.transaction = this.session.beginTransaction();
+
+            this.usuario.setEmail(this.operario.getCorreo());
+            if (this.usuario.getEmail().equals(this.operario.getCorreo())) {
+                this.usuario = usuarioDao.verificarCorreo(this.session, this.usuario);
+                this.perfil.setIdPerfil(1);
+                this.usuario.setPerfil(this.perfil);
+                usuarioDao.modificarUsuario(this.session, this.usuario);
+                operarioDao.eliminarOperario(this.session, this.operario);
+                this.operario = new Operario();
+                this.usuario = new Usuario();
+            }
             this.transaction.commit();
         } catch (Exception ex) {
             if (this.transaction != null) {
@@ -270,11 +273,11 @@ public class OperarioBean implements Serializable {
             }
         }
     }
-    
-    public boolean correoexiste( String correo){
-        for (Operario ope: this.operarios){
-            if(correo.equals(ope.getCorreo())){
-                return true; 
+
+    public boolean correoexiste(String correo) {
+        for (Operario ope : this.operarios) {
+            if (correo.equals(ope.getCorreo())) {
+                return true;
             }
         }
         return false;
