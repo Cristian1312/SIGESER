@@ -294,6 +294,8 @@ public class RegistrarServicioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Correcto", "Servicio registrado correctamente"));
             RequestContext.getCurrentInstance().update("servicioForm:mensajeGeneral");
+            this.setIdArea("");
+            this.setIdServicio("");
             this.solicitud = new Solicitud();
         }
         catch(Exception ex) {
@@ -301,7 +303,7 @@ public class RegistrarServicioBean implements Serializable {
                 transaction.rollback();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+                    FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la solicitud"));
         }
         finally {
             if(this.session != null) {

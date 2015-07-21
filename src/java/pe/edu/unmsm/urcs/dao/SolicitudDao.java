@@ -7,6 +7,7 @@ package pe.edu.unmsm.urcs.dao;
 
 import java.util.List;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import pe.edu.unmsm.urcs.interfaces.ISolicitudDao;
 import pe.edu.unmsm.urcs.modelo.Solicitud;
@@ -30,7 +31,6 @@ public class SolicitudDao implements ISolicitudDao {
     }
 
     @Override
-    
     public List<Solicitud> getSolicitudesFinalizadas(Session session) throws Exception {
         List<Solicitud> solicitudesFinalizadas = session.createQuery("from Solicitud where estado.idEstado = 5").
                 list();
@@ -41,11 +41,12 @@ public class SolicitudDao implements ISolicitudDao {
         }
         return solicitudesFinalizadas;
     }
-    @Override
     
+    @Override
     public List<Solicitud> getsolicitudesTerminadas(Session session) throws Exception {
-        List<Solicitud> solicitudesTerminadas = session.createQuery("from Solicitud where estado.idEstado = 5 "
-                ).list();
+        List<Solicitud> solicitudesTerminadas = session.createQuery("from "
+                + "Solicitud where estado.idEstado = 5 and monthname(curdate()) "
+                + "= monthname(fechaFinalizado)").list();
         for (Solicitud sol : solicitudesTerminadas) {
             Hibernate.initialize(sol.getUsuario());
             Hibernate.initialize(sol.getOperario());
@@ -57,7 +58,6 @@ public class SolicitudDao implements ISolicitudDao {
     }
     
     @Override
-    
     public List<Solicitud> getsolicitudesPendientes(Session session, String correo) throws Exception {
         List<Solicitud> solicitudesPendientes = session.createQuery("from Solicitud where estado.idEstado = 1 "
                 + "and operario.correo = '" + correo + "'").list();

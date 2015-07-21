@@ -282,5 +282,4 @@ public class OperarioBean implements Serializable {
         }
         return false;
     }
-
 }
